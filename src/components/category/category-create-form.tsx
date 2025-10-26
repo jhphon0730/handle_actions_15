@@ -51,7 +51,11 @@ export const CategoryCreateForm = () => {
         onChange={handleChangeColor}
         disabled={isPending}
       />
-      <Button type="submit" onClick={handleSubmit}>Add Category</Button>
+      <Button 
+        type="submit" 
+        onClick={handleSubmit}
+        disabled={isPending || !name.trim() || !color.trim()}
+      >Add Category</Button>
     </form>
   )
 }
