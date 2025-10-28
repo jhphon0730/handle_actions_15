@@ -3,8 +3,8 @@ import { CategoryCreateForm } from "@/components/category/category-create-form"
 const CategoryPage = () => {
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      <div className="text-center space-y-2">
-        <p className="text-muted-foreground">Manage your categories</p>
+      <div className="space-y-2">
+        <p className="text-2xl text-muted-foreground">Manage your categories</p>
       </div>
 
       <div className="w-full max-w-2xl mx-auto space-y-6">

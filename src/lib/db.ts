@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma"
+import { PrismaClient } from "@prisma/client"
 
 // 리로딩 기능으로 인해 PrismaClient 인스턴스가 여러 번 생성되는 것을 방지
 const globalForPrisma = globalThis as unknown as {

@@ -5,3 +5,11 @@ export interface Todo {
   done: boolean
   createdAt: Date
 }
+
+// category 타입
+export interface Category {
+  id: string
+  name: string
+  color: string
+  createdAt: Date
+}
