@@ -8,7 +8,7 @@ export const Navbar = () => {
         <h1 className="font-bold text-xl uppercase">
           <Link href="/" className="inline-flex items-center gap-2">
             <Image
-              src="/mainBanner.svg"
+              src="/mainBanner.png"
               alt="Logo"
               width={32}
               height={0}
