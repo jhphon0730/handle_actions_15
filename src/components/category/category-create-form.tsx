@@ -62,7 +62,7 @@ export const CategoryCreateForm = () => {
       </div>
       
       {/* color */}
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="color">Category Color</Label>
         <Input
           type="text"
