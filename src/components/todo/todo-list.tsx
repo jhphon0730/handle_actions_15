@@ -3,21 +3,24 @@
 import type React from "react"
 import { useState, useTransition } from "react"
 import { Trash2 } from "lucide-react"
-import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { createTodo, toggleTodo, deleteTodo } from "@/lib/actions/todo-actions"
 import { Todo } from "@/lib/types"
+import { useToast } from "@/hooks/toast-hook"
+import { createTodo, toggleTodo, deleteTodo } from "@/lib/actions/todo-actions"
+
 
 type TodoListProps = {
   todos: Todo[] | undefined;
 }
 
 const TodoList = ({ todos }: TodoListProps) => {
+  const { showError, showInfo, showSuccess } = useToast()
+
   const [title, setTitle] = useState("")
   const [isPending, startTransition] = useTransition()
 
@@ -29,9 +32,9 @@ const TodoList = ({ todos }: TodoListProps) => {
       const result = await createTodo(title)
       if (result.success) {
         setTitle("")
-        toast("Todo created successfully")
+        showSuccess("Todo created successfully")
       } else {
-        toast(result.error)
+        showError(result.error ?? "An unexpected error occurred")
       }
     })
   }
@@ -40,7 +43,7 @@ const TodoList = ({ todos }: TodoListProps) => {
     startTransition(async () => {
       const result = await toggleTodo(id)
       if (!result.success) {
-        toast(result.error)
+        showError(result.error ?? "An unexpected error occurred")
       }
     })
   }
@@ -49,9 +52,9 @@ const TodoList = ({ todos }: TodoListProps) => {
     startTransition(async () => {
       const result = await deleteTodo(id)
       if (result.success) {
-        toast("Todo deleted successfully")
+        showSuccess("Todo deleted successfully")
       } else {
-        toast(result.error)
+        showError(result.error ?? "An unexpected error occurred")
       }
     })
   }

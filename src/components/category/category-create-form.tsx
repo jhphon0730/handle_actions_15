@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 export const CategoryCreateForm = () => {
   const [name, setName] = useState<string>("");
   const [color, setColor] = useState<string>("");
-  const [isPending, startTransition] = useTransition()
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(() => e.target.value);
@@ -27,10 +26,6 @@ export const CategoryCreateForm = () => {
       toast("Please fill in all fields");
       return;
     };
-
-    startTransition(async () => {
-      console.log("TODO")
-    });
   }
 
   return (
@@ -41,7 +36,6 @@ export const CategoryCreateForm = () => {
         placeholder="Category Name"
         value={name}
         onChange={handleChangeName}
-        disabled={isPending}
       />
       {/* color */}
       <Input
@@ -49,12 +43,10 @@ export const CategoryCreateForm = () => {
         placeholder="Category Color"
         value={color}
         onChange={handleChangeColor}
-        disabled={isPending}
       />
       <Button 
         type="submit" 
         onClick={handleSubmit}
-        disabled={isPending || !name.trim() || !color.trim()}
       >Add Category</Button>
     </form>
   )
