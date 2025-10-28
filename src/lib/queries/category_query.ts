@@ -7,12 +7,21 @@ type getCategoriesQueryParams = {
   limit: number;
 };
 
+type getCategoriesQueryResult = {
+  categories: Category[];
+  totalCount: number;
+}
+
 // page >= 1 && limit >= 1
-export const getCategoriesQuery = async ({ page, limit }: getCategoriesQueryParams): Promise<Category[]> => {
-  const categories: Category[] = await db.category.findMany({
-    orderBy: { createdAt: "desc" },
-    skip: (page - 1) * limit,
-    take: limit,
-  });
-  return categories;
+export const getCategoriesQuery = async ({ page, limit }: getCategoriesQueryParams): Promise<getCategoriesQueryResult> => {
+  const [categories, totalCount] = await Promise.all([
+    db.category.findMany({
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    db.category.count(),
+  ]);
+
+  return { categories, totalCount };
 }
