@@ -20,6 +20,8 @@ export const CategoryList = async () => {
 
   return (
     <div className="p-4">
+      {/* TODO : 여기에 카테고리 개수 표시 예정 */}
+      {/* 전체 목록 */}
       <ul className="space-y-2">
         {categories.map((category) => (
           <li
@@ -33,6 +35,7 @@ export const CategoryList = async () => {
           </li>
         ))}
       </ul>
+      {/* TODO : 페이징 처리 추가해야 함 */}
     </div>
   );
 }
