@@ -10,7 +10,7 @@ type CategoryPageProps = {
 const CategoryPage = async ({searchParams}: CategoryPageProps) => {
   const sp = await searchParams;
   const page = sp.page as string ?? "1";
-  const limit = sp.limit as string ?? "10";
+  const limit = sp.limit as string ?? "5";
 
 
   return (

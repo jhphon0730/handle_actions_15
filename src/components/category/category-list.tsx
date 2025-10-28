@@ -23,8 +23,8 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
   }
 
   return (
-    <div className="ms-4">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="mt-4 md:ms-4 md:mt-0">
+      <div className="mb-1 flex items-center justify-between">
         <Badge variant="outline">Category Count: {totalCount}</Badge>
       </div>
 
@@ -36,7 +36,7 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
             className="rounded-xl border p-4 hover:bg-muted transition-colors"
           >
             {/* 이름 및 색상 정보 확인*/}
-            <div className="font-medium">
+            <div className="flex items-center justify-between flex-wrap font-medium">
               <span>{category.name}</span>
               <Badge className={`ms-2 h-5 w-5 border border-gray-50`} style={{ backgroundColor: category.color }}>
               </Badge>
