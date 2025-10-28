@@ -2,8 +2,10 @@ import { db } from "@/lib/db";
 
 import { Spinner } from "@/components/ui/spinner";
 
+import { Category } from "@/lib/types";
+
 export const CategoryList = async () => {
-  const categories = await db.category.findMany({
+  const categories: Category[] = await db.category.findMany({
     orderBy: { createdAt: "desc" },
   });
 
