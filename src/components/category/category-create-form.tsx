@@ -79,6 +79,15 @@ export const CategoryCreateForm = () => {
           </p>
         )}
       </div>
+
+      {/* 사용 팁 */}
+      <div className="rounded-md bg-muted p-4 space-y-2">
+        <h3 className="font-semibold text-sm">Tips.</h3>
+        <ul className="text-xs text-muted-foreground space-y-1">
+          <li>• The name must be between 2 and 50 characters.</li> 
+          <li>• The color must be in HEX code format (e.g., #FF5733).</li>
+        </ul>
+      </div>
       
       <Button 
         type="submit"
