@@ -34,8 +34,7 @@ export const createCategoryAction = async (prevState: CreateCategoryActionResult
       }
     });
 
-    // revalidatePath("/category");
-
+    revalidatePath("/category");
     return {
       success: true,
       category: createdCategory

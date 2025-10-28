@@ -1,16 +1,44 @@
 "use client";
 
 import type React from "react"
+import { useEffect } from "react";
 import { useActionState } from "react";
 
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import { useToast } from "@/hooks/toast-hook";
 import { createCategoryAction, CreateCategoryActionResult } from "@/lib/actions/category-actions";
 
 export const CategoryCreateForm = () => {
+  const { showSuccess, showError } = useToast();
   const [state, createFormAction, isPending] = useActionState<CreateCategoryActionResult | null, FormData>(createCategoryAction, null)
+
+  useEffect(() => {
+    if (!state) {
+      return;
+    }
+    
+    // 성공 시에
+    if (state.success) {
+      showSuccess(`Category "${state.category.name}" created successfully.`);
+      return;
+    }
+
+    // 실패 시에
+    const filedErrors = Object.entries(state.errors)
+      .filter(([key]) => key !== "_form")
+      .flatMap(([, message]) => message)
+
+    // 전체 오류 메시지에 _form 오류가 있으면 추가
+    if (state.errors._form) {
+      filedErrors.unshift(...state.errors._form);
+    }
+
+    showError(filedErrors.join(" "));
+
+  }, [state, showSuccess, showError]);
 
   return (
     <form className="space-y-4" action={createFormAction}>
