@@ -1,4 +1,5 @@
 import { CategoryCreateForm } from "@/components/category/category-create-form"
+import { CategoryList } from "@/components/category/category-list"
 
 const CategoryPage = () => {
   return (
@@ -12,6 +13,7 @@ const CategoryPage = () => {
         <CategoryCreateForm />
 
         {/* 카테고리 목록 */}
+        <CategoryList />
       </div>
       
     </div>
