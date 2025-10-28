@@ -8,7 +8,8 @@ const CategoryPage = () => {
         <p className="text-2xl text-muted-foreground">Manage your categories</p>
       </div>
 
-      <div className="w-full max-w-2xl mx-auto space-y-6">
+      {/* 카테고리 추가 및 목록 */}
+      <div className="w-full max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 ">
         {/* 카테고리 추가 */}
         <CategoryCreateForm />
 
