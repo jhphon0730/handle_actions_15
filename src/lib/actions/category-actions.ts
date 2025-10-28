@@ -16,8 +16,6 @@ export const createCategoryAction = async (prevState: CreateCategoryActionResult
     const name = formData.get("name") as string;
     const color = formData.get("color") as string;
 
-    console.log("formData received in action:", { name, color });
-
     const validated = categoryCreateSchema.safeParse({ name, color });
     if (!validated.success) {
       return {
