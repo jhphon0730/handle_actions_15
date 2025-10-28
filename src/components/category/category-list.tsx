@@ -1,13 +1,16 @@
-import { db } from "@/lib/db";
-
 import { Spinner } from "@/components/ui/spinner";
 
-import { Category } from "@/lib/types";
+import { getCategoriesQuery } from "@/lib/queries/category_query";
 
-export const CategoryList = async () => {
-  const categories: Category[] = await db.category.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+type CategoryListProps = {
+  page: number,
+  limit: number
+}
+
+export const CategoryList = async ({ page, limit }: CategoryListProps) => {
+  
+
+  const categories = await getCategoriesQuery({page, limit});
 
   if (!categories || categories.length === 0) {
     return (

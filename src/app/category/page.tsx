@@ -1,7 +1,18 @@
 import { CategoryCreateForm } from "@/components/category/category-create-form"
 import { CategoryList } from "@/components/category/category-list"
 
-const CategoryPage = () => {
+type CategoryPageProps = {
+  searchParams: { 
+    [key: string]: string | string[] | undefined 
+  };
+};
+
+const CategoryPage = async ({searchParams}: CategoryPageProps) => {
+  const sp = await searchParams;
+  const page = sp.page as string ?? "1";
+  const limit = sp.limit as string ?? "10";
+
+
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <div className="space-y-2">
@@ -14,7 +25,10 @@ const CategoryPage = () => {
         <CategoryCreateForm />
 
         {/* 카테고리 목록 */}
-        <CategoryList />
+        <CategoryList 
+          page={parseInt(page as string, 10)} 
+          limit={parseInt(limit as string, 10)}
+        />
       </div>
       
     </div>

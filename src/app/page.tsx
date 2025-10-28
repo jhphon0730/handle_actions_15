@@ -1,7 +1,6 @@
 import { getTodos } from "@/lib/actions/todo-actions"
 import { TodoList } from "@/components/todo/todo-list"
 
-
 const MainPage = async () => {
   const result = await getTodos()
   const todos = result.success ? result.data : []
