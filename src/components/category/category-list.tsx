@@ -24,7 +24,6 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
 
   return (
     <div className="ms-4">
-      {/* TODO : 여기에 카테고리 개수 표시 예정 */}
       <div className="mb-4 flex items-center justify-between">
         <Badge variant="outline">Category Count: {totalCount}</Badge>
       </div>
