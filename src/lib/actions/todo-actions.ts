@@ -3,6 +3,9 @@
 import { db} from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
+import type { Todo } from "@/lib/types"
+import { todoCreateSchema } from "../validations/todo-validations";
+
 /* todo 모두 조회 */
 export const getTodos = async () => {
   try {
@@ -17,21 +20,33 @@ export const getTodos = async () => {
   }
 };
 
-/* todo 생성 */
-export const createTodo = async (title: string) => {
-  if (!title.trim()) {
-    return { success: false, error: "Title is required" };
-  }
+export type CreateTodoActionResult = 
+  { success: true; todo: Todo } |
+  { success: false; errors: Record<string, string[]> };
 
+/* todo 생성 */
+export const createTodoAction = async (prevState: CreateTodoActionResult | null, formData: FormData): Promise<CreateTodoActionResult> => {
   try {
-    await db.todo.create({
-      data: { title: title.trim() },
+    const title = formData.get("title") as string;
+
+    const validated = todoCreateSchema.safeParse({title})
+    if (!validated.success) {
+      return {
+        success: false,
+        errors: validated.error.flatten().fieldErrors,
+      }
+    }
+
+    const todo = await db.todo.create({
+      data: { title: validated.data.title },
     })
 
     revalidatePath("/");
-    return { success: true };
+    return { success: true, todo };
   } catch (error) {
-    return { success: false, error: "Failed to create todo" };
+    return { success: false, errors: {
+      _form: ["An unexpected error occurred. Please try again."]
+    } };
   }
 }
 

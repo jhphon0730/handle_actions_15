@@ -48,15 +48,3 @@ export const createCategoryAction = async (prevState: CreateCategoryActionResult
     }
   }
 }
-
-export type CategoryListActionResult = Category[];
-
-{/* 목록 조회 */}
-export const categoryListAction = async (): Promise<CategoryListActionResult> => {
-  const categories = await db.category.findMany({
-    orderBy: {
-      createdAt: "desc"
-    }
-  });
-  return categories;
-}
