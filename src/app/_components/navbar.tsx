@@ -17,13 +17,6 @@ export const Navbar = () => {
             <p>Fucking TODO List</p>
           </Link>
         </h1>
-
-        {/* 네비게이션 링크 */}
-        <ul>
-          <li className="inline-block">
-            <Link href="/category">Categories</Link>
-          </li>
-        </ul>
       </nav>
     </header>
   )
