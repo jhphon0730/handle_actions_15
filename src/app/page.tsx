@@ -1,4 +1,4 @@
-import { TodoCreateForm } from "@/components/todo/todo-create-form"
+import { TodoCreateForm } from "@/components/todo/todo-form"
 import { TodoList } from "@/components/todo/todo-list"
 
 type TodoPageProps = {
