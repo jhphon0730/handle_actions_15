@@ -1,5 +1,4 @@
-import { CategoryCreateForm } from "@/components/category/category-form"
-import { CategoryList } from "@/components/category/category-list"
+import { CategoryList } from "@/app/category/components/category-list"
 
 type CategoryPageProps = {
   searchParams: { 
