@@ -6,7 +6,7 @@ export const Navbar = () => {
     <header className="fixed top-0 left-0 w-full bg-white px-6 py-4">
       <nav className="flex items-center justify-between w-full">
         <h1 className="font-bold text-xl uppercase">
-          <Link href="/" className="inline-flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/mainBanner.png"
               alt="Logo"
