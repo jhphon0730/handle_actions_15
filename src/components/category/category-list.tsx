@@ -84,7 +84,7 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
       { totalPages > 1 && !isOutOfRange && (
         <Pagination className="mt-2">
           <PaginationContent>
-            {/* 이전 */}
+            {/* 이전 
             <PaginationItem>
               <PaginationPrevious
                 href={page > 1 ? `/category?page=${page - 1}&limit=${limit}` : "#"}
@@ -93,6 +93,7 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
                 `)}
               />
             </PaginationItem>
+            */}
 
             {/* 페이지 번호 목록 */}
             { pageNumbers.map((pageItem, index) => { 
@@ -112,7 +113,7 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
               )
             })}
 
-            {/* 다음 */}
+            {/* 다음
             <PaginationItem>
               <PaginationNext
                 href={page < totalPages ? `/category?page=${page + 1}&limit=${limit}` : "#"}
@@ -121,6 +122,7 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
                 `)}
               />
             </PaginationItem>
+            */}
 
           </PaginationContent>
         </Pagination> 
