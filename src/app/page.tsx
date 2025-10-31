@@ -1,4 +1,3 @@
-import { TodoCreateForm } from "@/components/todo/todo-form"
 import { TodoList } from "@/components/todo/todo-list"
 
 type TodoPageProps = {
@@ -14,15 +13,16 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
-      <div className="space-y-2">
-        <p className="text-2xl text-muted-foreground">Manage your tasks</p>
+      {/* 페이지 Header */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-2xl font-semibold tracking-tight">Fucking Todo App</h2>
+          <p className="text-sm text-muted-foreground">Manage your tasks efficiently and effectively.</p>
+        </div>
       </div>
 
       {/* 할일 추가 및 목록 */}
       <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2">
-        {/* 할 일 추가 */}
-        <TodoCreateForm />
-
         {/* 할 일 목록 */}
         <TodoList 
           page={Math.max(parseInt(page as string, 10), 1)}
