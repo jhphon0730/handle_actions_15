@@ -19,21 +19,24 @@ export const buildError = (errors: Record<string, string[]>): string => {
 }
 
 /* 페이징 번호 배열 계산 함수 */
-export const buildPaginationRange = (currentPage: number, totalCount: number, limit: number) => {
+export const buildPaginationRange = (currentPage: number, totalCount: number, limit: number):  ((number | "...")[]) => {
+  if (limit < 1) limit = 1;
+  if (currentPage < 1) currentPage = 1;
+  if (totalCount < 1) return [];
+
   const totalPage = Math.ceil(totalCount / limit);
+  const maxVisibleCore = 5; // 최대 가운데 페이지 번호 개수
+  const sideWindow = 1; // 현재 페이지 양쪽에 표시할 페이지 수
 
   /* 전체 페이지 수가 limit 이하인 경우 모든 페이지 번호 반환 */
-  if (totalPage <= limit) {
+  if (totalPage <= maxVisibleCore) {
     return Array.from({ length: totalPage }, (_, i) => i + 1);
   }
 
-  /* 페이지 번호 범위 계산 */
   const pages: (number | "...")[] = []
-  const sideWindow = 1; // 현재 페이지 양쪽에 표시할 페이지 수
-
-  /* 첫 페이지와 마지막 페이지 */
   const firstPage = 1;
   const lastPage = totalPage;
+
   pages.push(firstPage);
 
   /* 가운데 페이지 범위 계산 */
