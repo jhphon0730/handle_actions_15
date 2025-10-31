@@ -1,6 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
+import { buildPaginationRange, cn } from "@/lib/utils";
 import { getCategoriesQuery } from "@/lib/queries/category_query";
 
 type CategoryListProps = {
@@ -11,22 +22,40 @@ type CategoryListProps = {
 export const CategoryList = async ({ page, limit }: CategoryListProps) => {
   const { categories, totalCount } = await getCategoriesQuery({page, limit});
 
-  if (!categories || categories.length === 0) {
+  /* 페이지가 범위를 벗어났다면 보여줄 데이터가 없음 */
+  const totalPages = Math.ceil(totalCount / limit);
+  const isOutOfRange = totalCount > 0 && categories.length === 0 && page > totalPages;
+  const pageNumbers = buildPaginationRange(page, totalCount, limit)
+
+  {/* 로딩중 & 카테고리 데이터가 없을 떄 보여지는 UI */}
+  if ((!categories || categories.length === 0) && !isOutOfRange) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 p-8">
         <Spinner />
         <div className="text-muted-foreground">
-          No categories found.
+          No category found.
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mt-4 md:ms-4 md:mt-0">
+    <div className="mt-4 md:ms-12 md:mt-0">
       <div className="mb-1 flex items-center justify-between">
-        <Badge variant="outline">Category Count: {totalCount}</Badge>
+        {/* 현재 페이지 */}
+        {totalPages > 0 && (
+          <span className="text-xs text-muted-foreground mx-2">
+            Page {page} of {totalPages}
+          </span>
+        )}
       </div>
+
+      {/* 페이지 범위를 넘어가면 */}
+      { isOutOfRange && (
+        <div className="mb-2 rounded-md border p-3 text-xs text-red-600">
+          The requested page {page} is out of range. Please select a page between 1 and {totalPages}.
+        </div>
+      )}
 
       {/* 전체 목록 */}
       <ul className="space-y-2">
@@ -48,7 +77,52 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
           </li>
         ))}
       </ul>
-      {/* TODO : 페이징 처리 추가해야 함 */}
+
+      {/* 페이지가 2이상일 때 표시 */}
+      { totalPages > 1 && !isOutOfRange && (
+        <Pagination className="mt-2">
+          <PaginationContent>
+            {/* 이전 */}
+            <PaginationItem>
+              <PaginationPrevious
+                href={page > 1 ? `/category?page=${page - 1}&limit=${limit}` : "#"}
+                className={cn(`
+                  page === 1 ? "pointer-events-none opacity-50" : ""
+                `)}
+              />
+            </PaginationItem>
+
+            {/* 페이지 번호 목록 */}
+            { pageNumbers.map((pageItem, index) => { 
+              if (pageItem === "...") {
+                return <PaginationItem key={index}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              }
+
+              return (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    href={`/category?page=${pageItem}&limit=${limit}`}
+                    isActive={pageItem === page}
+                  >{pageItem}</PaginationLink>
+                </PaginationItem>
+              )
+            })}
+
+            {/* 다음 */}
+            <PaginationItem>
+              <PaginationNext
+                href={page < totalPages ? `/category?page=${page + 1}&limit=${limit}` : "#"}
+                className={cn(`
+                  page === totalPages ? "pointer-events-none opacity-50" : ""
+                `)}
+              />
+            </PaginationItem>
+
+          </PaginationContent>
+        </Pagination> 
+      )}
     </div>
   );
 }

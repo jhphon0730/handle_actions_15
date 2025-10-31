@@ -19,14 +19,14 @@ const CategoryPage = async ({searchParams}: CategoryPageProps) => {
       </div>
 
       {/* 카테고리 추가 및 목록 */}
-      <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 ">
+      <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2">
         {/* 카테고리 추가 */}
         <CategoryCreateForm />
 
         {/* 카테고리 목록 */}
         <CategoryList 
-          page={parseInt(page as string, 10)} 
-          limit={parseInt(limit as string, 10)}
+          page={Math.max(parseInt(page as string, 10), 1)}
+          limit={Math.max(parseInt(limit as string, 10))}
         />
       </div>
       

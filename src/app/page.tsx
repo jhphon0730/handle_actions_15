@@ -25,8 +25,8 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
 
         {/* 할 일 목록 */}
         <TodoList 
-          page={parseInt(page as string, 10)}
-          limit={parseInt(limit as string, 10)}
+          page={Math.max(parseInt(page as string, 10), 1)}
+          limit={Math.max(parseInt(limit as string, 10))}
         />
       </div>
     </div>
