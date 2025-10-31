@@ -21,9 +21,9 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
   const isOutOfRange = totalCount > 0 && todos.length === 0 && page > totalPages;
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8">
       {/* 페이지 Header */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 mb-4">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold tracking-tight">Fucking Todo App</h2>
           <p className="text-sm text-muted-foreground">Manage your tasks efficiently and effectively.</p>

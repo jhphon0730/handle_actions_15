@@ -21,19 +21,17 @@ export const TodoTable = async ({ todos, isOutOfRange }: TodoTableProps) => {
   }
 
   return (
-    <div className="mt-4">
-      {/* 전체 목록 */}
-      <div className="flex flex-col gap-4">
-        {/* 검색 및 필터링 / Toolbar */}
+    <div className="flex flex-col gap-4 mt-4">
+    {/* 전체 목록 */}
+    {/* 검색 및 필터링 / Toolbar */}
 
-        {/* 데이터 테이블 */}
-        <Table>
-          {/* Header 컴포넌트 */}
+    {/* 데이터 테이블 */}
+    <Table>
+      {/* Header 컴포넌트 */}
 
-          {/* Body 컴포넌트 */}
-        </Table>
+      {/* Body 컴포넌트 */}
+    </Table>
 
-      </div>
     </div>
   )
 }
