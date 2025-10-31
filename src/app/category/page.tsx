@@ -14,15 +14,20 @@ const CategoryPage = async ({searchParams}: CategoryPageProps) => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
-      <div className="space-y-2">
-        <p className="text-2xl text-muted-foreground">Manage your categories</p>
+      {/* 페이지 Header */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Category Management
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Organize your tasks by managing categories effectively.
+          </p>
+        </div>
       </div>
 
       {/* 카테고리 추가 및 목록 */}
-      <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2">
-        {/* 카테고리 추가 */}
-        <CategoryCreateForm />
-
+      <div className="w-full mx-auto">
         {/* 카테고리 목록 */}
         <CategoryList 
           page={Math.max(parseInt(page as string, 10), 1)}

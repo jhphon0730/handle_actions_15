@@ -22,7 +22,7 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
       </div>
 
       {/* 할일 추가 및 목록 */}
-      <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2">
+      <div className="w-full mx-auto">
         {/* 할 일 목록 */}
         <TodoList 
           page={Math.max(parseInt(page as string, 10), 1)}

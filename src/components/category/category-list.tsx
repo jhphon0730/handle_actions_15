@@ -42,7 +42,7 @@ export const CategoryList = async ({ page, limit }: CategoryListProps) => {
   }
 
   return (
-    <div className="mt-4 md:ms-12 md:mt-0">
+    <div className="mt-4">
       <div className="mb-1 flex items-center justify-between">
         {/* 현재 페이지 */}
         {totalPages > 0 && (
