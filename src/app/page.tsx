@@ -1,4 +1,7 @@
-import { TodoList } from "@/app/_components/todo-list"
+import { TodoTable } from "@/app/_components/todo-table"
+import { TodoPagination } from "./_components/todo-pagination";
+
+import { getTodosQuery } from "@/lib/queries/todo_query";
 
 type TodoPageProps = {
   searchParams: { 
@@ -8,8 +11,14 @@ type TodoPageProps = {
 
 const MainPage = async ({ searchParams }: TodoPageProps) => {
   const sp = await searchParams;
-  const page = sp.page as string ?? "1";
-  const limit = sp.limit as string ?? "5";
+  const page = Math.max(parseInt(sp.page as string ?? "1"), 1);
+  const limit = Math.max(parseInt(sp.limit as string ?? "5"), 1);
+
+  const { todos, totalCount } = await getTodosQuery({page, limit});
+
+  /* 페이징 처리 데이터 정제 */
+  const totalPages = Math.ceil(totalCount / limit);
+  const isOutOfRange = totalCount > 0 && todos.length === 0 && page > totalPages;
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
@@ -21,12 +30,28 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
         </div>
       </div>
 
-      {/* 할일 추가 및 목록 */}
+      {/* 목록 */}
       <div className="w-full mx-auto">
+        {/* 페이지 범위를 넘어가면 */}
+        { isOutOfRange && (
+          <div className="mb-2 rounded-md border p-3 text-xs text-red-600">
+            The requested page {page} is out of range. Please select a page between 1 and {totalPages}.
+          </div>
+        )}
+
         {/* 할 일 목록 */}
-        <TodoList 
-          page={Math.max(parseInt(page as string, 10), 1)}
-          limit={Math.max(parseInt(limit as string, 10))}
+        <TodoTable 
+          todos={todos}
+          isOutOfRange={isOutOfRange}
+        />
+
+        {/* 페이지네이션 */}
+        <TodoPagination
+          page={page}
+          limit={limit}
+          totalPages={totalPages}
+          totalCount={totalCount}
+          isOutOfRange={isOutOfRange}
         />
       </div>
     </div>
