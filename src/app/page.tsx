@@ -1,4 +1,4 @@
-import { TodoList } from "@/components/todo/todo-list"
+import { TodoList } from "@/app/_components/todo-list"
 
 type TodoPageProps = {
   searchParams: { 
