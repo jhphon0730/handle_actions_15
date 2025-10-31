@@ -1,5 +1,5 @@
-import { TodoTable } from "@/app/_components/todo-table"
-import { TodoPagination } from "./_components/todo-pagination";
+import { TodoTable } from "@/app/_components/todo/todo-table"
+import { TodoPagination } from "./_components/todo/todo-pagination";
 
 import { getTodosQuery } from "@/lib/queries/todo_query";
 
