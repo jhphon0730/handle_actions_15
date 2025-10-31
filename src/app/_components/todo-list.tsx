@@ -6,6 +6,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { Table } from "@/components/ui/table";
 
 import { buildPaginationRange, cn } from "@/lib/utils";
 import { getTodosQuery } from "@/lib/queries/todo_query";
@@ -21,7 +22,6 @@ const TodoList = async ({ page, limit }: TodoListProps) => {
   /* 페이징 처리 데이터 정제 */
   const totalPages = Math.ceil(totalCount / limit);
   const isOutOfRange = totalCount > 0 && todos.length === 0 && page > totalPages;
-  const pageNumbers = buildPaginationRange(page, totalCount, limit)
 
   if ((!todos || todos.length === 0) && !isOutOfRange) {
     return (
@@ -48,11 +48,16 @@ const TodoList = async ({ page, limit }: TodoListProps) => {
         {/* 검색 및 필터링 / Toolbar */}
 
         {/* 데이터 테이블 */}
+        <Table>
+          {/* Header 컴포넌트 */}
+
+          {/* Body 컴포넌트 */}
+        </Table>
 
       </div>
       
 
-      {/* 페이지네이션 */}
+      {/* TODO : (todo-pagination 컴포넌트화 예정)페이지네이션 */}
       <div className="flex items-center justify-end gap-1">
         {/* 현재 페이지 */}
         {totalPages > 0 && (
