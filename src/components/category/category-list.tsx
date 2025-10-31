@@ -1,6 +1,5 @@
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
-
 import {
   Pagination,
   PaginationContent,
@@ -22,9 +21,12 @@ type CategoryListProps = {
 export const CategoryList = async ({ page, limit }: CategoryListProps) => {
   const { categories, totalCount } = await getCategoriesQuery({page, limit});
 
-  /* 페이지가 범위를 벗어났다면 보여줄 데이터가 없음 */
+  /* 페이징 처리 데이터 정제 */
+  // 최대 페이지 수
   const totalPages = Math.ceil(totalCount / limit);
+  // 페이지 범위 초과 여부
   const isOutOfRange = totalCount > 0 && categories.length === 0 && page > totalPages;
+  // 페이지 번호 목록 배열
   const pageNumbers = buildPaginationRange(page, totalCount, limit)
 
   {/* 로딩중 & 카테고리 데이터가 없을 떄 보여지는 UI */}
