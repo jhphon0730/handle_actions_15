@@ -52,7 +52,7 @@ export const TodoToolbar = ({
         />
         <Button
           type="button"
-          variant="outline"
+          variant="dashed"
         ></Button>
         { isFilterd &&
           <Button
@@ -88,7 +88,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
         <PopoverTrigger asChild>
           <Button
             type="button"
-            variant="outline"
+            variant="dashed"
           >
             <Plus />
             Status
@@ -141,7 +141,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
       {statusFilter.length > 0 && statusFilter.length <= 2 && statusFilter.map((status) => (
         <Button
           key={status}
-          variant="outline"
+          variant="dashed"
         >
           <Badge 
             variant="outline"
@@ -153,7 +153,8 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
       {/* 필터링 된 Status가 있으면서 3개 이상이면 */}
       {statusFilter.length > 2 && (
         <Button
-          variant="outline"
+          type="button"
+          variant="dashed"
         > 
           <Badge 
             variant="outline"
