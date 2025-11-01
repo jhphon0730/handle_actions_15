@@ -7,11 +7,10 @@ import { Todo } from "@/lib/types";
 type TodoTableProps = {
   todos: Todo[];
   todoHeaders: string[];
-  isOutOfRange: boolean;
 }
 
-export const TodoTable = async ({ todos, todoHeaders, isOutOfRange }: TodoTableProps) => {
-  if ((!todos || todos.length === 0) && !isOutOfRange) {
+export const TodoTable = async ({ todos, todoHeaders}: TodoTableProps) => {
+  if (!todos || todos.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 p-8">
         <Spinner />
