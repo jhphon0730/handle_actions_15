@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@/components/ui/spinner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { TodoTableCell } from "@/app/_components/todo/todo-table-cell";
 import { TodoToolbar } from "@/app/_components/todo/todo-toolbar"
@@ -21,15 +20,20 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     page,
     limit,
     totalPages,
+    search,
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
     handleSelectLimit,
+    handleSearchChange
   } = useTodoHooks({ initialData: todos, dataCount: totalCount, defaultSearchKey: "title" });
   return (
     <div className="flex flex-col gap-4">
       {/* 툴바 */}
-      <TodoToolbar />
+      <TodoToolbar 
+        searchData={search}
+        onSearchChange={handleSearchChange}
+      />
 
       {/* 전체 목록 */}
       <div className="rounded-md border">
