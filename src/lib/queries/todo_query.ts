@@ -12,6 +12,11 @@ type getTodosQueryResult = {
   totalCount: number;
 }
 
+export const getTodoHeaders = async (): Promise<string[]> => {
+  const todo = await db.todo.findFirst();
+  return todo ? Object.keys(todo) : [];
+}
+
 export const getTodosQuery = async ({ page, limit }: getTodsQueryParams): Promise<getTodosQueryResult> => {
   const [todos, totalCount] = await Promise.all([
     db.todo.findMany({

@@ -1,14 +1,16 @@
 import { Spinner } from "@/components/ui/spinner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TodoTableCell } from "@/app/_components/todo/todo-table-cell";
 
 import { Todo } from "@/lib/types";
 
 type TodoTableProps = {
   todos: Todo[];
+  todoHeaders: string[];
   isOutOfRange: boolean;
 }
 
-export const TodoTable = async ({ todos, isOutOfRange }: TodoTableProps) => {
+export const TodoTable = async ({ todos, todoHeaders, isOutOfRange }: TodoTableProps) => {
   if ((!todos || todos.length === 0) && !isOutOfRange) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 p-8">
@@ -29,17 +31,28 @@ export const TodoTable = async ({ todos, isOutOfRange }: TodoTableProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          {/* TODO : TableHeadCell.tsx 추가 */}
-          <TableHead className="w-[100px] font-bold"><div>Todo</div></TableHead>
-          <TableHead className="w-full font-bold"><div>Title</div></TableHead>
-          <TableHead className="w-[100px] font-bold"><div>Status</div></TableHead>
-          <TableHead className="w-[100px] font-bold"><div>Create At</div></TableHead>
+          {todoHeaders.length ? (
+            todoHeaders.map((header) => (
+              <TodoTableCell
+                key={header}
+                cellType="head"
+                cellData={header}
+              />
+            ))
+          ) : (
+            <TableHead>
+              <TodoTableCell
+                cellType="head"
+                cellData="No Headers"
+              />
+            </TableHead>
+          )}
         </TableRow>
       </TableHeader>
       <TableBody>
         {todos.length ? (
           todos.map((todo) => (
-            <TableRow>
+            <TableRow key={todo.id}>
               <TableCell>
                 Todo-{todo.id.slice(-5)}
               </TableCell>

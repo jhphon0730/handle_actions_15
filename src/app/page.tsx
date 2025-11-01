@@ -1,7 +1,7 @@
 import { TodoTable } from "@/app/_components/todo/todo-table"
 import { TodoPagination } from "./_components/todo/todo-pagination";
 
-import { getTodosQuery } from "@/lib/queries/todo_query";
+import { getTodoHeaders, getTodosQuery } from "@/lib/queries/todo_query";
 
 type TodoPageProps = {
   searchParams: { 
@@ -15,6 +15,7 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
   const limit = Math.max(parseInt(sp.limit as string ?? "5"), 1);
 
   const { todos, totalCount } = await getTodosQuery({page, limit});
+  const todoHeaders = await getTodoHeaders();
 
   /* 페이징 처리 데이터 정제 */
   const totalPages = Math.ceil(totalCount / limit);
@@ -42,6 +43,7 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
         {/* 할 일 목록 */}
         <TodoTable 
           todos={todos}
+          todoHeaders={todoHeaders}
           isOutOfRange={isOutOfRange}
         />
 
