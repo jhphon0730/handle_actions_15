@@ -1,16 +1,19 @@
 import type React from "react";
+import { X } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 type TodoToolbarProps = {
+  isFilterd: boolean;
   searchData: string;
   onSearchChange: (value: string) => void;
+  onResetFilters: () => void;
 }
 
 export const TodoToolbar = ({
-  searchData,
-  onSearchChange,
+  isFilterd, searchData,
+  onSearchChange, onResetFilters,
 }: TodoToolbarProps) => {
   return (
     <div className="flex items-center justify-between gap-2">
@@ -21,7 +24,7 @@ export const TodoToolbar = ({
           value={searchData}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
         />
-        {/* Done */}
+        {/* Status */}
         <Button
           type="button"
           variant="outline"
@@ -30,6 +33,15 @@ export const TodoToolbar = ({
           type="button"
           variant="outline"
         ></Button>
+        { isFilterd &&
+          <Button
+            type="button"
+            variant="ghost"
+          >
+            Reset
+            <X />
+          </Button>
+        }
       </div>
       <div className="flex items-center gap-2">
         <Button

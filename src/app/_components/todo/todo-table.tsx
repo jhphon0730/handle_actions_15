@@ -21,6 +21,8 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     limit,
     totalPages,
     search,
+    isFilterd,
+    handleResetFilters,
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
@@ -31,8 +33,10 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     <div className="flex flex-col gap-4">
       {/* 툴바 */}
       <TodoToolbar 
+        isFilterd={isFilterd}
         searchData={search}
         onSearchChange={handleSearchChange}
+        onResetFilters={handleResetFilters}
       />
 
       {/* 전체 목록 */}
