@@ -14,18 +14,39 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   const [data] = useState(initialData);
 
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(Math.ceil(dataCount / limit));
 
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [filters, setFilters] = useState<{ [key in keyof Todo]?: string }>({});
   const [isFilterd, setIsFilterd] = useState<boolean>(false);
+
+  /* 필터 초기화 */
+  const handleResetFilters = () => {
+    setPage(() => 1)
+    setSearch(() => "");
+    setStatusFilter(() => [])
+    setFilters({});
+    setIsFilterd(() => false)
+  }
 
   /* 검색 */
   const handleSearchChange = (value: string) => {
     setSearch(() => value)
     setPage(() => 1)
     setIsFilterd(() => value.length > 0)
+  }
+
+  const handleAddStatusFilter = (value: string) => {
+    setStatusFilter((prev) => {
+      const newFilters = prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value];
+      setIsFilterd(newFilters.length > 0 || search.length > 0 || Object.values(filters).some(f => f.length > 0));
+      setPage(() => 1);
+      return newFilters;
+    });
   }
 
   /* 필터링 추가 */
@@ -36,14 +57,6 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     }));
     setPage(() => 1)
     setIsFilterd(() => true)
-  }
-
-  /* 필터 초기화 */
-  const handleResetFilters = () => {
-    setFilters({});
-    setSearch("");
-    setPage(() => 1)
-    setIsFilterd(() => false)
   }
 
   /* 필터링 된 데이터 */
@@ -57,6 +70,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
       ))
     }
 
+    /* 각 필터링 조건 적용 (key로 검색) */
     for (const key in filters) {
       const value = filters[key as keyof Todo];
       if (value) {
@@ -64,6 +78,13 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
           String(item[key as keyof Todo]).toLowerCase().includes(value.toLowerCase())
         ));
       }
+    }
+
+    /* status로 필터링 */
+    if (statusFilter.length) {
+      result = result.filter((item) => (
+        statusFilter.includes(String(item.status).toLowerCase())
+      ));
     }
 
     return result;
@@ -100,7 +121,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   /* totalPages 업데이트 */
   useEffect(() => {
     setTotalPages(Math.ceil(filteredData().length / limit));
-  }, [filters, search, limit, data]);
+  }, [filters, search, limit, data, statusFilter]);
 
   return {
     data: paginatedData(),
@@ -110,9 +131,11 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     totalPages,
     filters,
     isFilterd,
+    statusFilter,
     handleSearchChange,
     handleUpdateFilter,
     handleResetFilters,
+    handleAddStatusFilter,
     handleNextPage,
     handlePrevPage,
     handleSelectPage,

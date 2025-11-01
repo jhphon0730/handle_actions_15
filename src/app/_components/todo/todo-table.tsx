@@ -22,7 +22,9 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     totalPages,
     search,
     isFilterd,
+    statusFilter,
     handleResetFilters,
+    handleAddStatusFilter,
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
@@ -35,7 +37,9 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
       <TodoToolbar 
         isFilterd={isFilterd}
         searchData={search}
+        statusFilter={statusFilter}
         onSearchChange={handleSearchChange}
+        onAddStatusFilter={handleAddStatusFilter}
         onResetFilters={handleResetFilters}
       />
 

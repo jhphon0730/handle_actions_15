@@ -41,7 +41,7 @@ export const TodoPagination = ({
 
   useEffect(() => {
     setPageNumbers(() => buildPaginationRange(page, totalCount, limit))
-  }, [page, limit])
+  }, [page, limit, totalPages])
 
   return (
     <div className="flex items-center justify-end gap-6">
