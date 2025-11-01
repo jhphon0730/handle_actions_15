@@ -44,14 +44,7 @@ export const TodoPagination = ({
   }, [page, limit])
 
   return (
-    <div className="flex items-center justify-end gap-1">
-      {/* 현재 페이지 */}
-      {totalPages > 0 && (
-        <span className="text-xs text-muted-foreground mx-2">
-          Page {page} of {totalPages}
-        </span>
-      )}
-
+    <div className="flex items-center justify-end gap-6">
       <Select onValueChange={(value) => {onSelectLimit(Number(value))}}>
         <SelectTrigger className="w-28 h-8">
           <SelectValue placeholder={`Show ${limit}`} />
@@ -64,6 +57,13 @@ export const TodoPagination = ({
           ))}
         </SelectContent>
       </Select>
+
+      {/* 현재 페이지 */}
+      {totalPages > 0 && (
+        <span className="text-xs text-muted-foreground mx-2">
+          Page {page} of {totalPages}
+        </span>
+      )}
 
       {/* 페이지 이동 */}
       { totalPages > 1 && (
