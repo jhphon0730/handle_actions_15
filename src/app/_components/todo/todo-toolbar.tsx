@@ -34,8 +34,8 @@ export const TodoToolbar = ({
   onSearchChange, onAddStatusFilter, onResetFilters,
 }: TodoToolbarProps) => {
   return (
-    <div className="flex items-center justify-between gap-2">
-      <div className="flex-1 flex items-center gap-2">
+    <div className="flex items-center flex-wrap justify-between gap-2">
+      <div className="flex items-center gap-2">
         <Input 
           type="text"
           placeholder="Search todos..."
