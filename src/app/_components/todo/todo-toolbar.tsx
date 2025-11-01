@@ -17,8 +17,10 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import {
-  Checkbox
-} from "@/components/ui/checkbox";
+  ButtonGroup,
+} from "@/components/ui/button-group"
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type TodoToolbarProps = {
   isFilterd: boolean;
@@ -81,58 +83,86 @@ type StatusFilterProps = {
 /* Status로 필터링 */
 const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <ButtonGroup>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+          >
+            <Plus />
+            Status
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-40 p-0">
+          <Command>
+            <CommandInput placeholder="Search" />
+            <CommandList>
+              <CommandEmpty>No Found.</CommandEmpty>
+              <CommandGroup>
+                {/* Open */}
+                <CommandItem value="open" onSelect={onAddStatusFilter}>
+                  <Checkbox 
+                    checked={statusFilter.includes("open")}
+                  />
+                  <Circle />
+                  Open
+                </CommandItem>
+                {/* Close */}
+                <CommandItem value="close" onSelect={onAddStatusFilter}>
+                  <Checkbox 
+                    checked={statusFilter.includes("close")}
+                  />
+                  <CheckCircle />
+                  Close
+                </CommandItem>
+                {/* In-Progress */}
+                <CommandItem value="in-progress" onSelect={onAddStatusFilter}>
+                  <Checkbox 
+                    checked={statusFilter.includes("in-progress")}
+                  />
+                  <Timer />
+                  In-Progress
+                </CommandItem>
+                {/* Pending */}
+                <CommandItem value="pending" onSelect={onAddStatusFilter}>
+                  <Checkbox 
+                    checked={statusFilter.includes("pending")}
+                  />
+                  <CircleHelp />
+                  Pending
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      {/* 필터링 된 Status가 있으면서 2개 이하면 */}
+      {statusFilter.length > 0 && statusFilter.length <= 2 && statusFilter.map((status) => (
         <Button
-          type="button"
+          key={status}
           variant="outline"
         >
-          <Plus />
-          Status
+          <Badge 
+            variant="outline"
+          >
+            {status}
+          </Badge>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-40 p-0">
-        <Command>
-          <CommandInput placeholder="Search" />
-          <CommandList>
-            <CommandEmpty>No Found.</CommandEmpty>
-            <CommandGroup>
-              {/* Open */}
-              <CommandItem value="open" onSelect={onAddStatusFilter}>
-                <Checkbox 
-                  checked={statusFilter.includes("open")}
-                />
-                <Circle />
-                Open
-              </CommandItem>
-              {/* Close */}
-              <CommandItem value="close" onSelect={onAddStatusFilter}>
-                <Checkbox 
-                  checked={statusFilter.includes("close")}
-                />
-                <CheckCircle />
-                Close
-              </CommandItem>
-              {/* In-Progress */}
-              <CommandItem value="in-progress" onSelect={onAddStatusFilter}>
-                <Checkbox 
-                  checked={statusFilter.includes("in-progress")}
-                />
-                <Timer />
-                In-Progress
-              </CommandItem>
-              {/* Pending */}
-              <CommandItem value="pending" onSelect={onAddStatusFilter}>
-                <Checkbox 
-                  checked={statusFilter.includes("pending")}
-                />
-                <CircleHelp />
-                Pending
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+      ))}
+      {/* 필터링 된 Status가 있으면서 3개 이상이면 */}
+      {statusFilter.length > 2 && (
+        <Button
+          variant="outline"
+        > 
+          <Badge 
+            variant="outline"
+          >
+            Selected {statusFilter.length}
+          </Badge>
+        </Button>
+      )}
+      
+    </ButtonGroup>
   )
 }
