@@ -38,6 +38,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     setIsFilterd(() => value.length > 0)
   }
 
+  /* status 필터 추가/제거 */
   const handleAddStatusFilter = (value: string) => {
     setStatusFilter((prev) => {
       const newFilters = prev.includes(value)
