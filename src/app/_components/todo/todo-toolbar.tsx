@@ -17,12 +17,13 @@ export const TodoToolbar = ({
 }: TodoToolbarProps) => {
   return (
     <div className="flex items-center justify-between gap-2">
-      <div className="flex-1 flex items-center gap-2 max-w-2xs">
+      <div className="flex-1 flex items-center gap-2">
         <Input 
-          type="search"
+          type="text"
           placeholder="Search todos..."
           value={searchData}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
+          className="max-w-3xs"
         />
         {/* Status */}
         <Button
@@ -37,6 +38,7 @@ export const TodoToolbar = ({
           <Button
             type="button"
             variant="ghost"
+            onClick={onResetFilters}
           >
             Reset
             <X />
