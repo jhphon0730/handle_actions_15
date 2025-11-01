@@ -1,11 +1,8 @@
 import { TodoTable } from "./_components/todo/todo-table"
-import { TodoToolbar } from "./_components/todo/todo-toolbar"
-import { TodoPagination } from "./_components/todo/todo-pagination";
 
 import { getTodoHeaders, getTodosQuery } from "@/lib/queries/todo_query";
 
 const MainPage = async () => {
-
   const { todos, totalCount } = await getTodosQuery();
   const todoHeaders = await getTodoHeaders();
 
@@ -21,18 +18,11 @@ const MainPage = async () => {
 
       {/* 목록 */}
       <div className="flex flex-col gap-2 mx-auto">
-      {/* 툴바 */}
-        <TodoToolbar />
-
         {/* 할 일 목록 */}
         <TodoTable 
           todos={todos}
-          todoHeaders={todoHeaders}
-        />
-
-        {/* 페이지네이션 */}
-        <TodoPagination
           totalCount={totalCount}
+          todoHeaders={todoHeaders}
         />
       </div>
     </div>

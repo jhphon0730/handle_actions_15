@@ -13,28 +13,28 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination"
 
+import { useTodoHooks } from "@/hooks/todo-hooks";
 import { cn, buildPaginationRange } from "@/lib/utils";
 
 type TodoPaginationProps = {
-  
+  page: number;
+  limit: number;
+  totalPages: number;
   totalCount: number;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  onSelectPage: (page: number) => void;
 }
 
-export const TodoPagination = ({totalCount}: TodoPaginationProps) => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+export const TodoPagination = ({
+  page, limit, totalPages, totalCount,
+  onNextPage, onPrevPage, onSelectPage,
+}: TodoPaginationProps) => {
   const [pageNumbers, setPageNumbers] = useState<(number | "...")[]>([]);
 
   useEffect(() => {
-    setTotalPages(() => Math.ceil(totalCount / limit))
     setPageNumbers(() => buildPaginationRange(page, totalCount, limit))
   }, [page, limit])
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage < 1 || newPage > totalPages) return;
-    setPage(newPage);
-  }
 
   return (
     <div className="flex items-center justify-end gap-1">
@@ -56,7 +56,7 @@ export const TodoPagination = ({totalCount}: TodoPaginationProps) => {
                 className={cn(`
                   page === 1 ? "pointer-events-none opacity-50" : ""
                 `)}
-                onClick={() => handlePageChange(page - 1)}
+                onClick={onPrevPage}
               />
             </PaginationItem>
 
@@ -73,7 +73,7 @@ export const TodoPagination = ({totalCount}: TodoPaginationProps) => {
                   <PaginationLink
                     href="/"
                     isActive={pageItem === page}
-                    onClick={() => handlePageChange(Number(pageItem))}
+                    onClick={() => onSelectPage(Number(pageItem))}
                   >{pageItem}</PaginationLink>
                 </PaginationItem>
               )
@@ -86,7 +86,7 @@ export const TodoPagination = ({totalCount}: TodoPaginationProps) => {
                 className={cn(`
                   page === totalPages ? "pointer-events-none opacity-50" : ""
                 `)}
-                onClick={() => handlePageChange(page + 1)}
+                onClick={onNextPage}
               />
             </PaginationItem>
 
