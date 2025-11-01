@@ -24,6 +24,7 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
+    handleSelectLimit,
   } = useTodoHooks({ initialData: todos, dataCount: totalCount, defaultSearchKey: "title" });
   return (
     <div className="flex flex-col gap-4">
@@ -92,6 +93,7 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
         onSelectPage={handleSelectPage}
+        onSelectLimit={handleSelectLimit}
       />
     </div>
   )

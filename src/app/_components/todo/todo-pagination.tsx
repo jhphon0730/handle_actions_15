@@ -12,8 +12,14 @@ import {
   PaginationLink,
   PaginationEllipsis,
 } from "@/components/ui/pagination"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import { useTodoHooks } from "@/hooks/todo-hooks";
 import { cn, buildPaginationRange } from "@/lib/utils";
 
 type TodoPaginationProps = {
@@ -24,11 +30,12 @@ type TodoPaginationProps = {
   onNextPage: () => void;
   onPrevPage: () => void;
   onSelectPage: (page: number) => void;
+  onSelectLimit: (limit: number) => void;
 }
 
 export const TodoPagination = ({
   page, limit, totalPages, totalCount,
-  onNextPage, onPrevPage, onSelectPage,
+  onNextPage, onPrevPage, onSelectPage, onSelectLimit,
 }: TodoPaginationProps) => {
   const [pageNumbers, setPageNumbers] = useState<(number | "...")[]>([]);
 
@@ -44,6 +51,19 @@ export const TodoPagination = ({
           Page {page} of {totalPages}
         </span>
       )}
+
+      <Select onValueChange={(value) => {onSelectLimit(Number(value))}}>
+        <SelectTrigger className="w-20 h-8 sm:w-[100px]">
+          <SelectValue placeholder={`Show ${limit}`} />
+        </SelectTrigger>
+        <SelectContent>
+          {[3, 5, 10, 20, 50].map((size) => (
+            <SelectItem key={size} value={String(size)}>
+              Show {size}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       {/* 페이지 이동 */}
       { totalPages > 1 ? (

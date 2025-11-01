@@ -87,6 +87,11 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     setPage(() => pageNumber);
   }
 
+  const handleSelectLimit = (newLimit: number) => {
+    setLimit(() => newLimit);
+    setPage(() => 1);
+  }
+
   /* totalPages 업데이트 */
   useEffect(() => {
     setTotalPages(Math.ceil(filteredData().length / limit));
@@ -105,5 +110,6 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
+    handleSelectLimit,
   }
 }
