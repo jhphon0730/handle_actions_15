@@ -53,7 +53,7 @@ export const TodoPagination = ({
       )}
 
       <Select onValueChange={(value) => {onSelectLimit(Number(value))}}>
-        <SelectTrigger className="w-20 h-8 sm:w-[100px]">
+        <SelectTrigger className="w-28 h-8">
           <SelectValue placeholder={`Show ${limit}`} />
         </SelectTrigger>
         <SelectContent>
@@ -66,7 +66,7 @@ export const TodoPagination = ({
       </Select>
 
       {/* 페이지 이동 */}
-      { totalPages > 1 ? (
+      { totalPages > 1 && (
         <Pagination className="mx-0 justify-start w-auto">
           <PaginationContent>
             {/* 이전 */}
@@ -112,8 +112,6 @@ export const TodoPagination = ({
 
           </PaginationContent>
         </Pagination> 
-      ) : (
-        <>123</>
       )}
     </div>
   )
