@@ -13,7 +13,7 @@ datasource db {
 model Todo {
   id        String   @id @default(cuid())
   title     String
-  done      Boolean  @default(false)
+  status    String  @default("open")
   createdAt DateTime @default(now())
 }
 

@@ -27,7 +27,7 @@ export const TodoTableCell = ({ cellData, cellType, ...props }: TodoTableCellPro
 const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => {
   const customClass = cellData === "id" ? "w-[100px]" :
     cellData === "title" ? "w-full" :
-      cellData === "done" ? "w-[100px]" :
+      cellData === "status" ? "w-[100px]" :
         "w-[100px]";
 
   return (

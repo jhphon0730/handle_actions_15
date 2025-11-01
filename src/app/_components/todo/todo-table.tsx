@@ -25,9 +25,6 @@ export const TodoTable = async ({ todos, todoHeaders, isOutOfRange }: TodoTableP
   return (
     <div className="flex flex-col gap-4 mt-4 rounded-md border">
     {/* 전체 목록 */}
-    {/* 검색 및 필터링 / Toolbar */}
-
-    {/* 데이터 테이블 */}
     <Table>
       <TableHeader>
         <TableRow>
@@ -59,8 +56,8 @@ export const TodoTable = async ({ todos, todoHeaders, isOutOfRange }: TodoTableP
               <TableCell>
                 {todo.title}
               </TableCell>
-              <TableCell>
-                {todo.done ? "Done" : "Pending" }
+              <TableCell className="uppercase">
+                {todo.status}
               </TableCell>
               <TableCell>
                 {todo.createdAt.toLocaleString("ko-KR", { timeZone: "UTC" })}
@@ -77,7 +74,6 @@ export const TodoTable = async ({ todos, todoHeaders, isOutOfRange }: TodoTableP
         )}
       </TableBody>
     </Table>
-
     </div>
   )
 }

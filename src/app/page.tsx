@@ -1,4 +1,5 @@
-import { TodoTable } from "@/app/_components/todo/todo-table"
+import { TodoTable } from "./_components/todo/todo-table"
+import { TodoToolbar } from "./_components/todo/todo-toolbar"
 import { TodoPagination } from "./_components/todo/todo-pagination";
 
 import { getTodoHeaders, getTodosQuery } from "@/lib/queries/todo_query";
@@ -39,6 +40,9 @@ const MainPage = async ({ searchParams }: TodoPageProps) => {
             The requested page {page} is out of range. Please select a page between 1 and {totalPages}.
           </div>
         )}
+
+        {/* 툴바 */}
+        <TodoToolbar />
 
         {/* 할 일 목록 */}
         <TodoTable 

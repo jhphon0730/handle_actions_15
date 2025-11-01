@@ -2,7 +2,7 @@
 export interface Todo {
   id: string
   title: string
-  done: boolean
+  status: "open" | "close" | "in-progress" | "pending"
   createdAt: Date
 }
 

@@ -64,7 +64,7 @@ export async function toggleTodo(id: string) {
     const updatedTodo = await db.todo.update({
       where: { id },
       data: {
-        done: !todo.done,
+        status: !todo.status,
       },
     })
 
