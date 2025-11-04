@@ -79,6 +79,9 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
                   <TableCell className="uppercase">
                     {todo.status}
                   </TableCell>
+                  <TableCell className="uppercase">
+                    {todo.priority}
+                  </TableCell>
                   <TableCell>
                     {todo.createdAt.toLocaleString("ko-KR", { timeZone: "UTC" })}
                   </TableCell>
