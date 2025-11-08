@@ -37,40 +37,64 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   }
 
   /* 검색 */
-  const handleSearchChange = (value: string) => {
-    setSearch(() => value)
+  const handleSearchChange = (value: string): void => {
     setPage(() => 1)
+    setSearch(() => value)
+
+    setIsFilterd(() => (
+      value.length > 0 ||
+      Object.keys(filters).length > 0 ||
+      statusFilter.length > 0 ||
+      priorityFilter.length > 0
+    ))
+    return;
   }
 
   /* status 필터 추가/제거 */
-  const handleStatusFilter = (value: string) => {
+  const handleStatusFilter = (value: string): void => {
+    setPage(() => 1);
     setStatusFilter((prev) => {
       const newFilters = prev.includes(value)
         ? prev.filter((item) => item !== value)
         : [...prev, value];
-      setPage(() => 1);
+        
+      setIsFilterd(() => (
+        search.length > 0 ||
+        Object.keys(filters).length > 0 ||
+        newFilters.length > 0 ||
+        priorityFilter.length > 0
+      ))
       return newFilters;
     });
+    return
   }
 
   /* priority로 필터 추가/삭제 */
-  const handlePriorityFilter = (value: string) => {
+  const handlePriorityFilter = (value: string): void => {
+    setPage(() => 1)
     setPriorityFilter((prev) => {
       const newFilters = prev.includes(value)
         ? prev.filter((item) => item !== value)
         : [...prev, value]
-      setPage(() => 1)
+
+      setIsFilterd(() => (
+        search.length > 0 ||
+        Object.keys(filters).length > 0 ||
+        statusFilter.length > 0 ||
+        newFilters.length > 0
+      ))
       return newFilters;
     })
+    return;
   }
 
   /* 필터링 추가 */
   const handleUpdateFilter = (key: keyof Todo, value: string) => {
+    setPage(() => 1)
     setFilters((prev) => ({
       ...prev,
       [key]: value,
     }));
-    setPage(() => 1)
   }
 
   /* 필터링 된 데이터 */
@@ -106,17 +130,6 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
       result = result.filter((item) => (
         priorityFilter.includes(String(item.priority).toLowerCase())
       ))
-    }
-
-    if (
-      search.length > 0 ||
-      Object.keys(filters).length > 0 ||
-      statusFilter.length > 0 ||
-      priorityFilter.length > 0
-    ) {
-      setIsFilterd(() => true)
-    } else {
-      setIsFilterd(() => false)
     }
 
     return result;
