@@ -1,5 +1,5 @@
 import type React from "react";
-import { X, Plus, Circle, CheckCircle, Timer, CircleHelp } from "lucide-react";
+import { X, PlusCircle, Circle, CheckCircle, Timer, CircleHelp } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,7 @@ export const TodoToolbar = ({
         <Button
           type="button"
           variant="dashed"
-        ></Button>
+        ><PlusCircle />Priority</Button>
         { isFilterd &&
           <Button
             type="button"
@@ -90,7 +90,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
             type="button"
             variant="dashed"
           >
-            <Plus />
+            <PlusCircle />
             Status
           </Button>
         </PopoverTrigger>
