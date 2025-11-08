@@ -13,7 +13,8 @@ datasource db {
 model Todo {
   id        String   @id @default(cuid())
   title     String
-  status    String  @default("open")
+  status    String  @default("open") // "open" | "close" | "in-progress" | "pending"
+  priority  String  @default("low")  // "low" | "medium" | "high"
   createdAt DateTime @default(now())
 }
 

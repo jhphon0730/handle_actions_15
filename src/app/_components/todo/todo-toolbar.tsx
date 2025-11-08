@@ -1,5 +1,9 @@
 import type React from "react";
-import { X, Plus, Circle, CheckCircle, Timer, CircleHelp } from "lucide-react";
+import { 
+  X, PlusCircle, 
+  Circle, CheckCircle, Timer, CircleHelp,
+  ArrowDown, ArrowRight, ArrowUp,
+} from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -26,14 +30,16 @@ type TodoToolbarProps = {
   isFilterd: boolean;
   searchData: string;
   statusFilter: string[];
+  priorityFilter: string[];
   onSearchChange: (value: string) => void;
-  onAddStatusFilter: (status: string) => void;
+  onStatusFilter: (status: string) => void;
+  onPriorityFilter: (priority: string) => void;
   onResetFilters: () => void;
 }
 
 export const TodoToolbar = ({
-  isFilterd, searchData, statusFilter,
-  onSearchChange, onAddStatusFilter, onResetFilters,
+  isFilterd, searchData, statusFilter, priorityFilter,
+  onSearchChange, onStatusFilter, onPriorityFilter, onResetFilters,
 }: TodoToolbarProps) => {
   return (
     <div className="flex items-center flex-wrap justify-between gap-2">
@@ -48,12 +54,13 @@ export const TodoToolbar = ({
         {/* Status */}
         <StatusFilter 
           statusFilter={statusFilter}
-          onAddStatusFilter={onAddStatusFilter}
+          onStatusFilter={onStatusFilter}
         />
-        <Button
-          type="button"
-          variant="outline"
-        ></Button>
+        {/* Priority */}
+        <PriorityFilter
+          priorityFilter={priorityFilter}
+          onPriorityFilter={onPriorityFilter}
+        />
         { isFilterd &&
           <Button
             type="button"
@@ -77,20 +84,20 @@ export const TodoToolbar = ({
 
 type StatusFilterProps = {
   statusFilter: string[];
-  onAddStatusFilter: (status: string) => void;
+  onStatusFilter: (status: string) => void;
 }
 
 /* Status로 필터링 */
-const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
+const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
   return (
     <ButtonGroup>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             type="button"
-            variant="outline"
+            variant="dashed"
           >
-            <Plus />
+            <PlusCircle />
             Status
           </Button>
         </PopoverTrigger>
@@ -101,7 +108,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
               <CommandEmpty>No Found.</CommandEmpty>
               <CommandGroup>
                 {/* Open */}
-                <CommandItem value="open" onSelect={onAddStatusFilter}>
+                <CommandItem value="open" onSelect={onStatusFilter}>
                   <Checkbox 
                     checked={statusFilter.includes("open")}
                   />
@@ -109,7 +116,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
                   Open
                 </CommandItem>
                 {/* Close */}
-                <CommandItem value="close" onSelect={onAddStatusFilter}>
+                <CommandItem value="close" onSelect={onStatusFilter}>
                   <Checkbox 
                     checked={statusFilter.includes("close")}
                   />
@@ -117,7 +124,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
                   Close
                 </CommandItem>
                 {/* In-Progress */}
-                <CommandItem value="in-progress" onSelect={onAddStatusFilter}>
+                <CommandItem value="in-progress" onSelect={onStatusFilter}>
                   <Checkbox 
                     checked={statusFilter.includes("in-progress")}
                   />
@@ -125,7 +132,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
                   In-Progress
                 </CommandItem>
                 {/* Pending */}
-                <CommandItem value="pending" onSelect={onAddStatusFilter}>
+                <CommandItem value="pending" onSelect={onStatusFilter}>
                   <Checkbox 
                     checked={statusFilter.includes("pending")}
                   />
@@ -141,7 +148,7 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
       {statusFilter.length > 0 && statusFilter.length <= 2 && statusFilter.map((status) => (
         <Button
           key={status}
-          variant="outline"
+          variant="dashed"
         >
           <Badge 
             variant="outline"
@@ -153,7 +160,8 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
       {/* 필터링 된 Status가 있으면서 3개 이상이면 */}
       {statusFilter.length > 2 && (
         <Button
-          variant="outline"
+          type="button"
+          variant="dashed"
         > 
           <Badge 
             variant="outline"
@@ -162,7 +170,76 @@ const StatusFilter = ({statusFilter, onAddStatusFilter}: StatusFilterProps) => {
           </Badge>
         </Button>
       )}
-      
+    </ButtonGroup>
+  )
+}
+
+type PriorityFilterProps = {
+  priorityFilter: string[];
+  onPriorityFilter: (priority: string) => void;
+}
+
+const PriorityFilter = ({priorityFilter, onPriorityFilter}: PriorityFilterProps) => {
+  return (
+    <ButtonGroup>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="dashed"
+          >
+            <PlusCircle />
+            Priority
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-40 p-0">
+          <Command>
+            <CommandInput placeholder="Search" />
+            <CommandList>
+              <CommandEmpty>No Found.</CommandEmpty>
+              <CommandGroup>
+                {/* low */}
+                <CommandItem value="low" onSelect={onPriorityFilter}>
+                  <Checkbox 
+                    checked={priorityFilter.includes("low")}
+                  />
+                  <ArrowDown />
+                  Low
+                </CommandItem>
+                {/* medium */}
+                <CommandItem value="medium" onSelect={onPriorityFilter}>
+                  <Checkbox 
+                    checked={priorityFilter.includes("medium")}
+                  />
+                  <ArrowRight />
+                  Medium
+                </CommandItem>
+                {/* High */}
+                <CommandItem value="high" onSelect={onPriorityFilter}>
+                  <Checkbox 
+                    checked={priorityFilter.includes("high")}
+                  />
+                  <ArrowUp />
+                  High
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      {/* 필터링 된 항목이 있으면 숫자로 표기 */}
+      {priorityFilter.length > 0 && (
+        <Button
+          key={status}
+          variant="dashed"
+        >
+          <Badge 
+            variant="outline"
+          >
+          {priorityFilter.length}
+          </Badge>
+        </Button>
+      )}
     </ButtonGroup>
   )
 }

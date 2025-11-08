@@ -23,8 +23,10 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     search,
     isFilterd,
     statusFilter,
+    priorityFilter,
     handleResetFilters,
-    handleAddStatusFilter,
+    handleStatusFilter,
+    handlePriorityFilter,
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
@@ -38,8 +40,10 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
         isFilterd={isFilterd}
         searchData={search}
         statusFilter={statusFilter}
+        priorityFilter={priorityFilter}
         onSearchChange={handleSearchChange}
-        onAddStatusFilter={handleAddStatusFilter}
+        onStatusFilter={handleStatusFilter}
+        onPriorityFilter={handlePriorityFilter}
         onResetFilters={handleResetFilters}
       />
 
@@ -78,6 +82,9 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
                   </TableCell>
                   <TableCell className="uppercase">
                     {todo.status}
+                  </TableCell>
+                  <TableCell className="uppercase">
+                    {todo.priority}
                   </TableCell>
                   <TableCell>
                     {todo.createdAt.toLocaleString("ko-KR", { timeZone: "UTC" })}

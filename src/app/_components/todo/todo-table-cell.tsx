@@ -1,6 +1,3 @@
-/* th, td에 속하는 속성들에서 사용하는 컴포넌트 */
-import { cva, type VariantProps } from "class-variance-authority"
-
 import { TableHead } from "@/components/ui/table";
 
 import { cn } from "@/lib/utils";
@@ -25,18 +22,16 @@ export const TodoTableCell = ({ cellData, cellType, ...props }: TodoTableCellPro
 
 /* 헤더 셀 */
 const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => {
-  const customClass = cellData === "id" ? "w-[100px]" :
-    cellData === "title" ? "w-full" :
-      cellData === "status" ? "w-[100px]" :
-        "w-[100px]";
+  const customClass = cellData === "title" ? "w-full" : "w-[300px]";
+  const customClassByHead = cellData === "title" ? "flex items-center gap-2" : "w-[150px]"
 
   return (
     <TableHead
       {...props}
-      className={cn(className, customClass) }
+      className={cn(className, customClass, "font-semibold") }
     >
-      <div>
-        <span>{cellData}</span>
+      <div className={customClassByHead}>
+        <span>{cellData.charAt(0).toUpperCase() + cellData.slice(1)}</span>
       </div>
     </TableHead>
     
