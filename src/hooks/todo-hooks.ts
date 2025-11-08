@@ -10,6 +10,9 @@ type TodoListDataOptions = {
   defaultSearchKey?: keyof Todo;
 }
 
+/*
+  * defaultSearchKey는 검색어로 검색할 때, 사용하는 테이블 컬럼을 의미함(기본 값은 "title")
+*/
 export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoListDataOptions) => {
   const [data] = useState(initialData);
 
@@ -19,6 +22,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
   const [filters, setFilters] = useState<{ [key in keyof Todo]?: string }>({});
   const [isFilterd, setIsFilterd] = useState<boolean>(false);
 
@@ -27,6 +31,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     setPage(() => 1)
     setSearch(() => "");
     setStatusFilter(() => [])
+    setPriorityFilter(() => [])
     setFilters({});
     setIsFilterd(() => false)
   }
@@ -35,19 +40,28 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   const handleSearchChange = (value: string) => {
     setSearch(() => value)
     setPage(() => 1)
-    setIsFilterd(() => value.length > 0)
   }
 
   /* status 필터 추가/제거 */
-  const handleAddStatusFilter = (value: string) => {
+  const handleStatusFilter = (value: string) => {
     setStatusFilter((prev) => {
       const newFilters = prev.includes(value)
         ? prev.filter((item) => item !== value)
         : [...prev, value];
-      setIsFilterd(newFilters.length > 0 || search.length > 0 || Object.values(filters).some(f => f.length > 0));
       setPage(() => 1);
       return newFilters;
     });
+  }
+
+  /* priority로 필터 추가/삭제 */
+  const handlePriorityFilter = (value: string) => {
+    setPriorityFilter((prev) => {
+      const newFilters = prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+      setPage(() => 1)
+      return newFilters;
+    })
   }
 
   /* 필터링 추가 */
@@ -57,7 +71,6 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
       [key]: value,
     }));
     setPage(() => 1)
-    setIsFilterd(() => true)
   }
 
   /* 필터링 된 데이터 */
@@ -86,6 +99,24 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
       result = result.filter((item) => (
         statusFilter.includes(String(item.status).toLowerCase())
       ));
+    }
+
+    /* priority로 필터링 */
+    if (priorityFilter.length) {
+      result = result.filter((item) => (
+        priorityFilter.includes(String(item.priority).toLowerCase())
+      ))
+    }
+
+    if (
+      search.length > 0 ||
+      Object.keys(filters).length > 0 ||
+      statusFilter.length > 0 ||
+      priorityFilter.length > 0
+    ) {
+      setIsFilterd(() => true)
+    } else {
+      setIsFilterd(() => false)
     }
 
     return result;
@@ -122,7 +153,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   /* totalPages 업데이트 */
   useEffect(() => {
     setTotalPages(Math.ceil(filteredData().length / limit));
-  }, [filters, search, limit, data, statusFilter]);
+  }, [search, limit, data, filters, statusFilter, priorityFilter]);
 
   return {
     data: paginatedData(),
@@ -133,10 +164,12 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     filters,
     isFilterd,
     statusFilter,
+    priorityFilter,
     handleSearchChange,
     handleUpdateFilter,
     handleResetFilters,
-    handleAddStatusFilter,
+    handleStatusFilter,
+    handlePriorityFilter,
     handleNextPage,
     handlePrevPage,
     handleSelectPage,
