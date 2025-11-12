@@ -76,9 +76,9 @@ export const TodoCreateForm = () => {
               </p>
             )}
           </div>
-          {/* TODO: Selectbox Status */}
+          {/* TODO: Selectbox Status / import by constants/todo.ts */}
 
-          {/* TODO: Selectbox Priority */}
+          {/* TODO: Selectbox Priority / import by constants/todo.ts */}
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
