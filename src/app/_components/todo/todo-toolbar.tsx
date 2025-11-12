@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/button-group"
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TodoCreateForm } from "./todo-form";
 
 type TodoToolbarProps = {
   isFilterd: boolean;
@@ -73,10 +74,7 @@ export const TodoToolbar = ({
         }
       </div>
       <div className="flex items-center gap-2">
-        <Button
-          type="button"
-          variant="outline"
-        >Add Todo</Button>
+        <TodoCreateForm />
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     handleSearchChange
   } = useTodoHooks({ initialData: todos, dataCount: totalCount, defaultSearchKey: "title" });
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       {/* 툴바 */}
       <TodoToolbar 
         isFilterd={isFilterd}
