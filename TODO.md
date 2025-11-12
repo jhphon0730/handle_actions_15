@@ -1,6 +1,5 @@
 # Todo 
 ## High
- *. ServerAction : todo-form.tsx, todo-actions.ts 
  *. DB : Migation the Todo Table ( Add ForeignKey - Category )
  *. Tooltip : View ( Add/Remove Column ) Option
 ## Medium

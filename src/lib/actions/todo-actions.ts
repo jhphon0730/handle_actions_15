@@ -3,8 +3,16 @@
 import { db} from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-import type { Todo } from "@/lib/types"
+import type { Todo, TodoPriority, TodoStatus } from "@/lib/types"
 import { todoCreateSchema } from "../validations/todo-validations";
+
+const mapToTodo = (dbTodo: { id: string; title: string; status: string; priority: string; createdAt: Date; }): Todo => {
+  return {
+    ...dbTodo,
+    status: dbTodo.status as TodoStatus,
+    priority: dbTodo.priority as TodoPriority,
+  }
+}
 
 /* todo 모두 조회 */
 export const getTodos = async () => {
@@ -28,8 +36,10 @@ export type CreateTodoActionResult =
 export const createTodoAction = async (prevState: CreateTodoActionResult | null, formData: FormData): Promise<CreateTodoActionResult> => {
   try {
     const title = formData.get("title") as string;
+    const status = formData.get("status") as TodoStatus;
+    const priority = formData.get("priority") as TodoPriority;
 
-    const validated = todoCreateSchema.safeParse({title})
+    const validated = todoCreateSchema.safeParse({title, status, priority})
     if (!validated.success) {
       return {
         success: false,
@@ -38,11 +48,15 @@ export const createTodoAction = async (prevState: CreateTodoActionResult | null,
     }
 
     const todo = await db.todo.create({
-      data: { title: validated.data.title },
+      data: { 
+        title: validated.data.title,
+        priority: validated.data.priority,
+        status: validated.data.status
+      },
     })
 
     revalidatePath("/");
-    return { success: true, todo };
+    return { success: true, todo: mapToTodo(todo) };
   } catch (error) {
     return { success: false, errors: {
       _form: ["An unexpected error occurred. Please try again."]
@@ -51,7 +65,7 @@ export const createTodoAction = async (prevState: CreateTodoActionResult | null,
 }
 
 // todo 완료/미완료 토글
-export async function toggleTodo(id: string) {
+export const toggleTodo = async (id: string, status: TodoStatus) => {
   try {
     const todo = await db.todo.findUnique({
       where: { id },
@@ -64,7 +78,7 @@ export async function toggleTodo(id: string) {
     const updatedTodo = await db.todo.update({
       where: { id },
       data: {
-        status: !todo.status,
+        status: status
       },
     })
 
@@ -76,7 +90,7 @@ export async function toggleTodo(id: string) {
 }
 
 // todo 삭제
-export async function deleteTodo(id: string) {
+export const deleteTodo = async (id: string) => {
   try {
     await db.todo.delete({
       where: { id },

@@ -1,9 +1,12 @@
 // todo 타입
+export type TodoStatus = "open" | "close" | "in-progress" | "pending"
+export type TodoPriority = "low" | "medium" | "high"
+
 export interface Todo {
   id: string
   title: string
-  status: "open" | "close" | "in-progress" | "pending"
-  priority: "low" | "medium" | "high"
+  status: TodoStatus
+  priority: TodoPriority
   createdAt: Date
 }
 
