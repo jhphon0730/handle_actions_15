@@ -61,12 +61,10 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
                   />
                 ))
               ) : (
-                <TableHead>
-                  <TodoTableCell
-                    cellType="head"
-                    cellData="No Headers"
-                  />
-                </TableHead>
+								<TodoTableCell
+									cellType="head"
+									cellData="No Headers"
+								/>
               )}
             </TableRow>
           </TableHeader>
