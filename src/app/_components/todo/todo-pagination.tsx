@@ -72,7 +72,7 @@ export const TodoPagination = ({
             {/* 이전 */}
             <PaginationItem>
               <PaginationPrevious
-                href="/"
+                href="#"
                 className={cn(`
                   page === 1 ? "pointer-events-none opacity-50" : ""
                 `)}
@@ -91,7 +91,7 @@ export const TodoPagination = ({
               return (
                 <PaginationItem key={index}>
                   <PaginationLink
-                    href="/"
+                    href="#"
                     isActive={pageItem === page}
                     onClick={() => onSelectPage(Number(pageItem))}
                   >{pageItem}</PaginationLink>
@@ -102,7 +102,7 @@ export const TodoPagination = ({
             {/* 다음 */}
             <PaginationItem>
               <PaginationNext
-                href="/"
+                href="#"
                 className={cn(`
                   page === totalPages ? "pointer-events-none opacity-50" : ""
                 `)}

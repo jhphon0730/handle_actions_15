@@ -1,9 +1,10 @@
 import { TodoTable } from "./_components/todo/todo-table"
 
-import { getTodoHeaders, getTodosQuery } from "@/lib/queries/todo_query";
+import { getTodosWithCount } from "@/lib/actions/todo-actions";
+import { getTodoHeaders } from "@/lib/queries/todo_query";
 
 const MainPage = async () => {
-  const { todos, totalCount } = await getTodosQuery();
+  const { todos, totalCount } = await getTodosWithCount();
   const todoHeaders = await getTodoHeaders();
 
   return (

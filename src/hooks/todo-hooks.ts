@@ -14,7 +14,7 @@ type TodoListDataOptions = {
   * defaultSearchKey는 검색어로 검색할 때, 사용하는 테이블 컬럼을 의미함(기본 값은 "title")
 */
 export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoListDataOptions) => {
-  const [data] = useState(initialData);
+  const [data, setData] = useState<Todo[]>(initialData);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -26,14 +26,20 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   const [filters, setFilters] = useState<{ [key in keyof Todo]?: string }>({});
   const [isFilterd, setIsFilterd] = useState<boolean>(false);
 
+	/* initialData이 바뀌면 hooks 초기화 */
+	useEffect(() => {
+		setData(() => initialData);
+		handleResetFilters();
+	}, [initialData, dataCount]);
+
   /* 필터 초기화 */
   const handleResetFilters = () => {
-    setPage(() => 1)
     setSearch(() => "");
     setStatusFilter(() => [])
     setPriorityFilter(() => [])
     setFilters({});
     setIsFilterd(() => false)
+		setTotalPages(() => Math.ceil(dataCount / 5));
   }
 
   /* 검색 */

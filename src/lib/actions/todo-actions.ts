@@ -28,6 +28,22 @@ export const getTodos = async () => {
   }
 };
 
+type getTodosWithCountResult = {
+  todos: Todo[];
+  totalCount: number;
+}
+
+export const getTodosWithCount = async (): Promise<getTodosWithCountResult> => {
+  const [todos, totalCount] = await Promise.all([
+    db.todo.findMany({
+      orderBy: { createdAt: "desc" },
+    }),
+    db.todo.count()
+  ]);
+  
+  return { todos, totalCount };
+}
+
 export type CreateTodoActionResult = 
   { success: true; todo: Todo } |
   { success: false; errors: Record<string, string[]> };
