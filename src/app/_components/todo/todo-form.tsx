@@ -16,10 +16,18 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import { buildError } from "@/lib/utils";
 import { useToast } from "@/hooks/toast-hook";
 import { createTodoAction, CreateTodoActionResult } from "@/lib/actions/todo-actions";
+import { todoStatusOptions, todoPriorityOptions } from "@/constants/todo";
 
 export const TodoCreateForm = () => {
   const { showSuccess, showError } = useToast();
@@ -56,29 +64,85 @@ export const TodoCreateForm = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={createFormAction}></form>
-          {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
-            <Input 
-              type="text"
-              id="title"
-              name="title"
-              placeholder=""
-              disabled={isPending}
-              aria-invalid={state && !state?.success && state.errors.title ? "true" : "false"}
-              aria-describedby={state && !state?.success && state.errors.title ? "title-error" : undefined}
-            />
-            {/* 오류 메시지 */}
-            { state && !state.success && state.errors.title && (
-              <p className="text-sm text-red-600" id="title-error">
-                {state.errors.title.join(" ") }
-              </p>
-            )}
+						{/* Title 입력 */}
+						<div>
+							<Label htmlFor="todo-create-form-title">Title</Label>
+							<Input 
+								type="text"
+								id="todo-create-form-title"
+								name="title"
+								placeholder=""
+								disabled={isPending}
+								aria-invalid={state && !state?.success && state.errors.title ? "true" : "false"}
+								aria-describedby={state && !state?.success && state.errors.title ? "title-error" : undefined}
+							/>
+							{/* 오류 메시지 */}
+							{ state && !state.success && state.errors.title && (
+								<p className="text-sm text-red-600" id="title-error">
+									{state.errors.title.join(" ") }
+								</p>
+							)}
+						</div>
           </div>
-          {/* TODO: Selectbox Status / import by constants/todo.ts */}
 
-          {/* TODO: Selectbox Priority / import by constants/todo.ts */}
+					{/* Status 선택 */}
+					<div>
+						<Label htmlFor="todo-create-form-status">Status</Label>
+						<Select
+							name="status"
+							disabled={isPending}
+							aria-invalid={state && !state?.success && state.errors.status ? "true" : "false"}
+							aria-describedby={state && !state?.success && state.errors.status ? "status-error" : undefined}
+						>
+							<SelectTrigger id="todo-create-form-status" className="w-full">
+								<SelectValue placeholder="Select a status" />
+							</SelectTrigger>
+							<SelectContent>
+								{ todoStatusOptions.map((option) => (
+									<SelectItem key={option} value={option}>
+										{option}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+						{/* 오류 메시지 */}
+						{state && !state.success && state.errors.status && (
+							<p className="text-sm text-red-600" id="status-error">
+								{state.errors.status.join(" ") }
+							</p>
+						)}
+					</div>
+
+					{/* Priority 선택 */}
+					<div>
+						<Label htmlFor="todo-create-form-priority">Priority</Label>
+						<Select
+							name="priority"
+							disabled={isPending}
+							aria-invalid={state && !state?.success && state.errors.priority ? "true" : "false"}
+							aria-describedby={state && !state?.success && state.errors.priority ? "priority-error" : undefined}
+						>
+							<SelectTrigger id="todo-create-form-priority" className="w-full">
+								<SelectValue placeholder="Select a priority" />
+							</SelectTrigger>
+							<SelectContent>
+								{ todoPriorityOptions.map((option) => (
+									<SelectItem key={option} value={option}>
+										{option}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+						{/* 오류 메시지 */}
+						{state && !state.success && state.errors.priority && (
+							<p className="text-sm text-red-600" id="priority-error">
+								{state.errors.priority.join(" ") }
+							</p>
+						)}
+					</div>
+
+					{/* 저장 & 닫기 버튼 */}
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Close</Button>

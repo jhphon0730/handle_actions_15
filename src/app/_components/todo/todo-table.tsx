@@ -78,10 +78,10 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
                   <TableCell>
                     {todo.title}
                   </TableCell>
-                  <TableCell className="uppercase">
+                  <TableCell>
                     {todo.status}
                   </TableCell>
-                  <TableCell className="uppercase">
+                  <TableCell>
                     {todo.priority}
                   </TableCell>
                   <TableCell>

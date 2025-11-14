@@ -1,4 +1,4 @@
 import type { TodoStatus, TodoPriority } from "@/lib/types"
 
-const todoStatusOptions: TodoStatus[] = ["open", "close", "in-progress", "pending"]
-const todoPriorityOptions: TodoPriority[] = ["low", "medium", "high"]
+export const todoStatusOptions: TodoStatus[] = ["open", "close", "in-progress", "pending"]
+export const todoPriorityOptions: TodoPriority[] = ["low", "medium", "high"]
