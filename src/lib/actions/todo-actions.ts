@@ -14,6 +14,17 @@ const mapToTodo = (dbTodo: { id: string; title: string; status: string; priority
   }
 }
 
+const mapToTodoArray = (dbTodos: { id: string; title: string; status: string; priority: string; createdAt: Date; }[]): Todo[] => {
+  const tempTodos: Todo[] = dbTodos.map((todo) => {
+    return {
+      ...todo,
+      status: todo.status as TodoStatus,
+      priority: todo.priority as TodoPriority,
+    }
+  })
+  return tempTodos;
+}
+
 /* todo 모두 조회 */
 export const getTodos = async () => {
   try {
@@ -41,7 +52,7 @@ export const getTodosWithCount = async (): Promise<getTodosWithCountResult> => {
     db.todo.count()
   ]);
   
-  return { todos, totalCount };
+  return { todos: mapToTodoArray(todos), totalCount };
 }
 
 export type CreateTodoActionResult = 

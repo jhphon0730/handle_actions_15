@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useActionState } from "react";
 
 import { Label } from "@radix-ui/react-label";
@@ -31,24 +31,45 @@ import { todoStatusOptions, todoPriorityOptions } from "@/constants/todo";
 
 export const TodoCreateForm = () => {
   const { showSuccess, showError } = useToast();
+	 
+	const [isOpen, setIsOpen] = useState<boolean>(false)
   const [state, createFormAction, isPending] = useActionState<CreateTodoActionResult | null, FormData>(createTodoAction, null)
+	// state의 상태를 모달과 동일하게 관리하기 위한 State
+	const [localActionState, setLocalActionState] = useState<CreateTodoActionResult | null>(null)
+
+	useEffect(() => {
+		if (state !== null) {
+			setLocalActionState(() => state);
+		}
+		return;
+	}, [state])
 
   useEffect(() => {
-    if (!state) {
+    if (!localActionState) {
       return;
     }
 
-    if (state.success) {
-      showSuccess(`Todo "${state.todo.title}" created successfully.`);
+    if (localActionState.success) {
+      showSuccess(`Todo "${localActionState.todo.title}" created successfully.`);
+			setIsOpen(() => false);
       return;
     }
 
-    const errorMsg = buildError(state.errors)
+    const errorMsg = buildError(localActionState.errors)
     showError(errorMsg);
-  }, [state, showSuccess, showError])
+  }, [localActionState, showSuccess, showError])
+
+	// open & close Modal
+	const handleDialogState = (open: boolean): void => {
+		setIsOpen(() => open);
+		if (open) {
+			setLocalActionState(() => null)
+		}
+		return;
+	}
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={handleDialogState}>
       <DialogTrigger asChild>
         <Button
           type="button"
