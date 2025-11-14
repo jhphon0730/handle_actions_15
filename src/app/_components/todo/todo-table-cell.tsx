@@ -31,7 +31,9 @@ const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => 
       className={cn(className, customClass, "font-semibold") }
     >
       <div className={customClassByHead}>
-        <span>{cellData.charAt(0).toUpperCase() + cellData.slice(1)}</span>
+        <span>{ cellData === "id" ? "#" :
+          cellData.charAt(0).toUpperCase() + cellData.slice(1)
+        }</span>
       </div>
     </TableHead>
     
