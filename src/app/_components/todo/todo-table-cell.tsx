@@ -10,16 +10,8 @@ type BaseCellProps = React.HTMLAttributes<HTMLDivElement> & {
   cellData: string;
 }
 
-type TodoTableHeadCellProps = BaseCellProps & {
-  sortableColumn: {
-    column: keyof Todo | null;
-    order: "asc" | "desc" | null;
-  }
-  handleSortByColumn: (column: keyof Todo, order: "asc" | "desc") => void
-}
-
 /* 헤더 셀 */
-export const TodoTableHeadCell = ({ cellData, className, sortableColumn, handleSortByColumn, ...props }: TodoTableHeadCellProps) => {
+export const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => {
   const customClass = cellData === "title" ? "w-full" : "w-[300px]";
   const customClassByHead = cellData === "title" ? "flex items-center gap-2" : "w-[150px]"
   cellData = cellData === "id" ? "#" : cellData;
@@ -37,8 +29,6 @@ export const TodoTableHeadCell = ({ cellData, className, sortableColumn, handleS
         { !isSortable ? FirstChildCharUpper(cellData) : (
           <SortableHeader 
             label={cellData}
-            sortableColumn={sortableColumn}
-            onSort={handleSortByColumn}
           />
         )}
       </div>
@@ -49,20 +39,15 @@ export const TodoTableHeadCell = ({ cellData, className, sortableColumn, handleS
 
 type SortableHeaderProps = {
   label: string;
-  sortableColumn: {
-    column: keyof Todo | null;
-    order: "asc" | "desc" | null;
-  }
-  onSort: (column: keyof Todo, order: "asc" | "desc") => void
 }
 
 /* Title 헤더 셀 정렬 */
-const SortableHeader = ({label, sortableColumn, onSort}: SortableHeaderProps) => {
+const SortableHeader = ({label}: SortableHeaderProps) => {
   // <button onClick={() => {onSort(label as keyof Todo, "asc")}}>{label}</button>
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button type="button" variant="ghost" className="px-0 font-semibold">
+        <Button type="button" variant="ghost" className="px-0 font-semibold gap-2">
           <span>{FirstChildCharUpper(label)}</span>
         </Button>
       </DropdownMenuTrigger>

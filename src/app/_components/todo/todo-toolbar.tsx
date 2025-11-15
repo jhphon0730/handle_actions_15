@@ -7,66 +7,53 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  ButtonGroup,
-} from "@/components/ui/button-group"
+import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, } from "@/components/ui/command"
+import { ButtonGroup, } from "@/components/ui/button-group"
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TodoCreateForm } from "./todo-form";
 
+import { useTodoStore } from "@/store/useTodoStore";
+
 type TodoToolbarProps = {
-  isFilterd: boolean;
-  searchData: string;
-  statusFilter: string[];
-  priorityFilter: string[];
-  onSearchChange: (value: string) => void;
-  onStatusFilter: (status: string) => void;
-  onPriorityFilter: (priority: string) => void;
-  onResetFilters: () => void;
 }
 
 export const TodoToolbar = ({
-  isFilterd, searchData, statusFilter, priorityFilter,
-  onSearchChange, onStatusFilter, onPriorityFilter, onResetFilters,
 }: TodoToolbarProps) => {
+  const { 
+    search, handleSearchChange,
+    statusFilter, handleStatusFilter,
+    priorityFilter, handlePriorityFilter,
+    isFilterd, handleResetFilters,
+
+  } = useTodoStore();
+
   return (
     <div className="flex items-center flex-wrap justify-between gap-2">
       <div className="flex items-center gap-2">
         <Input 
           type="text"
           placeholder="Search todos..."
-          value={searchData}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
+          value={search}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSearchChange(e.target.value)}
           className="max-w-3xs"
         />
         {/* Status */}
         <StatusFilter 
           statusFilter={statusFilter}
-          onStatusFilter={onStatusFilter}
+          onStatusFilter={handleStatusFilter}
         />
         {/* Priority */}
         <PriorityFilter
           priorityFilter={priorityFilter}
-          onPriorityFilter={onPriorityFilter}
+          onPriorityFilter={handlePriorityFilter}
         />
         { isFilterd &&
           <Button
             type="button"
             variant="ghost"
-            onClick={onResetFilters}
+            onClick={handleResetFilters}
           >
             Reset
             <X />

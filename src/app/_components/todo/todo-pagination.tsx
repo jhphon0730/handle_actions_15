@@ -1,6 +1,5 @@
 "use client";
 
-import type React from "react";
 import { useEffect, useState } from "react";
 
 import {
@@ -21,31 +20,28 @@ import {
 } from "@/components/ui/select";
 
 import { cn, buildPaginationRange } from "@/lib/utils";
+import { useTodoStore } from "@/store/useTodoStore";
 
 type TodoPaginationProps = {
-  page: number;
-  limit: number;
-  totalPages: number;
-  totalCount: number;
-  onNextPage: () => void;
-  onPrevPage: () => void;
-  onSelectPage: (page: number) => void;
-  onSelectLimit: (limit: number) => void;
+  filterdDataCount: number;
 }
 
-export const TodoPagination = ({
-  page, limit, totalPages, totalCount,
-  onNextPage, onPrevPage, onSelectPage, onSelectLimit,
-}: TodoPaginationProps) => {
+export const TodoPagination = ({ filterdDataCount }: TodoPaginationProps) => {
+  const {
+    page, limit, totalPages,
+    handleSelectLimit, handleNextPage, handlePrevPage, handleSelectPage,
+  } = useTodoStore();
+
   const [pageNumbers, setPageNumbers] = useState<(number | "...")[]>([]);
 
   useEffect(() => {
-    setPageNumbers(() => buildPaginationRange(page, totalCount, limit))
-  }, [page, limit, totalPages])
+    setPageNumbers(() => buildPaginationRange(page, filterdDataCount, limit))
+    useTodoStore.setState({ totalPages: Math.ceil(filterdDataCount / limit) })
+  }, [page, limit, filterdDataCount])
 
   return (
-    <div className="flex items-center justify-end gap-6">
-      <Select onValueChange={(value) => {onSelectLimit(Number(value))}}>
+    <div className="flex items-center justify-end gap-6 mb-2">
+      <Select value={limit.toString()} onValueChange={(value) => {handleSelectLimit(Number(value))}}>
         <SelectTrigger className="w-28 h-8">
           <SelectValue placeholder={`Show ${limit}`} />
         </SelectTrigger>
@@ -76,7 +72,7 @@ export const TodoPagination = ({
                 className={cn(`
                   page === 1 ? "pointer-events-none opacity-50" : ""
                 `)}
-                onClick={onPrevPage}
+                onClick={handlePrevPage}
               />
             </PaginationItem>
 
@@ -93,7 +89,7 @@ export const TodoPagination = ({
                   <PaginationLink
                     href="#"
                     isActive={pageItem === page}
-                    onClick={() => onSelectPage(Number(pageItem))}
+                    onClick={() => handleSelectPage(Number(pageItem))}
                   >{pageItem}</PaginationLink>
                 </PaginationItem>
               )
@@ -106,7 +102,7 @@ export const TodoPagination = ({
                 className={cn(`
                   page === totalPages ? "pointer-events-none opacity-50" : ""
                 `)}
-                onClick={onNextPage}
+                onClick={handleNextPage}
               />
             </PaginationItem>
 

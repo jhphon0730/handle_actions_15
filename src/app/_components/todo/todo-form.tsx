@@ -45,7 +45,7 @@ export const TodoCreateForm = () => {
 	}, [state])
 
   useEffect(() => {
-    if (!localActionState) {
+    if (!localActionState || !isOpen) {
       return;
     }
 
