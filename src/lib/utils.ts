@@ -75,3 +75,8 @@ export const buildPaginationRange = (currentPage: number, totalCount: number, li
   pages.push(lastPage);
   return pages;
 }
+
+/* 문자열 첫 번째만 대문자로 변경 */
+export const FirstChildCharUpper = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}

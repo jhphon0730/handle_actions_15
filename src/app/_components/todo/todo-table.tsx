@@ -24,6 +24,7 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     isFilterd,
     statusFilter,
     priorityFilter,
+    sortableColumn,
     handleResetFilters,
     handleStatusFilter,
     handlePriorityFilter,
@@ -58,6 +59,7 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
                   <TodoTableHeadCell
                     key={header}
                     cellData={header}
+                    sortableColumn={sortableColumn}
                     handleSortByColumn={handleSortByColumn}
                   />
                 ))

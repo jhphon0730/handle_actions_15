@@ -248,6 +248,7 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     isFilterd,
     statusFilter,
     priorityFilter,
+    sortableColumn,
     handleSearchChange,
     handleUpdateFilter,
     handleResetFilters,
