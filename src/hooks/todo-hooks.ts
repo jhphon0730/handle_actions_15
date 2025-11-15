@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { type Todo } from "@/lib/types";
+import type { Todo, TodoPriority, TodoStatus } from "@/lib/types";
 
 type TodoListDataOptions = {
   initialData: Todo[];
@@ -25,6 +25,10 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
   const [priorityFilter, setPriorityFilter] = useState<string[]>([]);
   const [filters, setFilters] = useState<{ [key in keyof Todo]?: string }>({});
   const [isFilterd, setIsFilterd] = useState<boolean>(false);
+  const [sortableColumn, setSortableColumn] = useState<{ column: keyof Todo | null, order: "asc" | "desc" | null }>({
+    column: null,
+    order: null
+  })
 
 	/* initialData이 바뀌면 hooks 초기화 */
 	useEffect(() => {
@@ -103,6 +107,14 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     }));
   }
 
+  /* 정렬 설정 */
+  const handleSortByColumn = (column: keyof Todo, order: "asc" | "desc") => {
+    setSortableColumn(() => ({
+      column,
+      order
+    }))
+  }
+
   /* 필터링 된 데이터 */
   const filteredData = () => {
     let result = [...data];
@@ -137,6 +149,58 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
         priorityFilter.includes(String(item.priority).toLowerCase())
       ))
     }
+
+    /* Column으로 정렬 */
+    if (sortableColumn.column && sortableColumn.order) {
+      const { column, order } = sortableColumn;
+
+      result = [...result].sort((a, b) => {
+        const x = a[column];
+        const y = b[column];
+
+        /* priority로 정렬 */
+        if (column === "priority") {
+          const priorityRank: Record<TodoPriority, number> = {
+            high: 3,
+            medium: 2,
+            low: 1
+          };
+    
+          const xx = priorityRank[x as TodoPriority];
+          const yy = priorityRank[y as TodoPriority];
+    
+          return order === "asc"
+            ? xx - yy
+            : yy - xx;
+        }
+
+        /* status 로 정렬 */
+        if (column === "status") {
+          const statusRank: Record<TodoStatus, number> = {
+            open: 1,
+            close: 2,
+            "in-progress": 3,
+            pending: 4
+          }
+
+          const xx = statusRank[x as TodoStatus]
+          const yy = statusRank[y as TodoStatus]
+
+          return order == "asc"
+            ? xx - yy
+            : yy - xx;
+        }
+
+        /* 문자열로 정렬 */
+        if (typeof x === "string" && typeof y === "string") {
+          return order === "asc"
+            ? x.localeCompare(y)
+            : y.localeCompare(x);
+        }
+
+        return 0;
+      });
+    };
 
     return result;
   }
@@ -193,5 +257,6 @@ export const useTodoHooks = ({initialData, dataCount, defaultSearchKey}: TodoLis
     handlePrevPage,
     handleSelectPage,
     handleSelectLimit,
+    handleSortByColumn,
   }
 }

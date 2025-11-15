@@ -1,7 +1,7 @@
 "use client";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { TodoTableCell } from "@/app/_components/todo/todo-table-cell";
+import { TodoTableBodyCell, TodoTableHeadCell } from "@/app/_components/todo/todo-table-cell";
 import { TodoToolbar } from "@/app/_components/todo/todo-toolbar"
 import { TodoPagination } from "@/app/_components/todo/todo-pagination";
 
@@ -31,7 +31,8 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
     handlePrevPage,
     handleSelectPage,
     handleSelectLimit,
-    handleSearchChange
+    handleSearchChange,
+    handleSortByColumn,
   } = useTodoHooks({ initialData: todos, dataCount: totalCount, defaultSearchKey: "title" });
   return (
     <div className="flex flex-col gap-2">
@@ -54,17 +55,14 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
             <TableRow>
               {todoHeaders.length ? (
                 todoHeaders.map((header) => (
-                  <TodoTableCell
+                  <TodoTableHeadCell
                     key={header}
-                    cellType="head"
                     cellData={header}
+                    handleSortByColumn={handleSortByColumn}
                   />
                 ))
               ) : (
-								<TodoTableCell
-									cellType="head"
-									cellData="No Headers"
-								/>
+                <span>No Headers</span>
               )}
             </TableRow>
           </TableHeader>
@@ -72,21 +70,21 @@ export const TodoTable = ({ todos, totalCount, todoHeaders}: TodoTableProps) => 
             {data.length ? (
               data.map((todo) => (
                 <TableRow key={todo.id}>
-                  <TableCell>
-                    Todo-{todo.id.slice(-5)}
-                  </TableCell>
-                  <TableCell>
-                    {todo.title}
-                  </TableCell>
-                  <TableCell>
-                    {todo.status}
-                  </TableCell>
-                  <TableCell>
-                    {todo.priority}
-                  </TableCell>
-                  <TableCell>
-                    {todo.createdAt.toLocaleString("ko-KR", { timeZone: "UTC" })}
-                  </TableCell>
+                  <TodoTableBodyCell
+                    cellData={`Todo-${todo.id.slice(-5)}`}
+                  />
+                  <TodoTableBodyCell 
+                    cellData={todo.title}
+                  />
+                  <TodoTableBodyCell 
+                    cellData={todo.status}
+                  />
+                  <TodoTableBodyCell 
+                    cellData={todo.priority}
+                  />
+                  <TodoTableBodyCell 
+                    cellData={todo.createdAt.toLocaleString("ko-KR", { timeZone: "UTC" })}
+                  />
                 </TableRow>
               ))
             ) : (

@@ -1,33 +1,25 @@
-import { TableHead } from "@/components/ui/table";
+import { TableHead, TableCell } from "@/components/ui/table";
 
 import { cn } from "@/lib/utils";
+import type { Todo } from "@/lib/types";
 
 /* 공통 셀 타입 */
 type BaseCellProps = React.HTMLAttributes<HTMLDivElement> & {
   cellData: string;
 }
 
-/* 셀 타입 분기 */
-type TodoTableCellProps = BaseCellProps & {
-  cellType: "head" | "body";
+type TodoTableHeadCellProps = BaseCellProps & {
+  handleSortByColumn: (column: keyof Todo, order: "asc" | "desc") => void
 }
 
-export const TodoTableCell = ({ cellData, cellType, ...props }: TodoTableCellProps) => {
-  return cellType === "head" ? (
-    <TodoTableHeadCell cellData={cellData} {...props} />
-  ) : (
-    <TodoTableBodyCell cellData={cellData} {...props} />
-  );
-};
-
 /* 헤더 셀 */
-const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => {
+export const TodoTableHeadCell = ({ cellData, className, handleSortByColumn, ...props }: TodoTableHeadCellProps) => {
   const customClass = cellData === "title" ? "w-full" : "w-[300px]";
   const customClassByHead = cellData === "title" ? "flex items-center gap-2" : "w-[150px]"
-  cellData = cellData.charAt(0).toUpperCase() + cellData.slice(1);
+  cellData = cellData === "id" ? "#" : cellData;
 
   /* 정렬이 가능한 컬럼 식별 */
-  const isDropColumn = cellData === "Title" || cellData === "Status" || cellData === "Priority";
+  const isSortable = cellData === "title" || cellData === "status" || cellData === "priority";
 
   return (
     <TableHead
@@ -35,28 +27,39 @@ const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => 
       className={cn(className, customClass, "font-semibold") }
     >
       <div className={customClassByHead}>
-        { cellData === "Id" && "#" }
-        { !isDropColumn && cellData }
-      
-        { isDropColumn && cellData == "Title" && <SortTitleCell /> }
-        { isDropColumn && cellData == "Status" && <></> }
-        { isDropColumn && cellData == "Priority" && <></> }
+        {/* ID의 경우 "#"으로 변경, 첫 글자만 대문자 -> 소문자로 유지 */}
+        { !isSortable ? cellData.charAt(0).toUpperCase() + cellData.slice(1).toLowerCase() : (
+          <SortableHeader 
+            label={cellData}
+            onSort={handleSortByColumn}
+          />
+        )}
       </div>
     </TableHead>
     
   );
 };
 
+type SortableHeaderProps = {
+  label: string;
+  onSort: (column: keyof Todo, order: "asc" | "desc") => void
+}
+
 /* Title 헤더 셀 정렬 */
-const SortTitleCell = () => {
+const SortableHeader = ({label, onSort}: SortableHeaderProps) => {
   return (
-    <></>
+    <>
+      <span>123</span>
+      <button onClick={() => {onSort(label as keyof Todo, "asc")}}>{label}</button>
+    </>
   );
 }
 
 /* 바디 셀 */
-const TodoTableBodyCell = ({ cellData, ...props }: BaseCellProps) => {
+export const TodoTableBodyCell = ({ cellData, ...props }: BaseCellProps) => {
   return (
-    <></>
+    <TableCell>
+      {cellData}
+    </TableCell>
   );
 };
