@@ -24,6 +24,10 @@ export const TodoTableCell = ({ cellData, cellType, ...props }: TodoTableCellPro
 const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => {
   const customClass = cellData === "title" ? "w-full" : "w-[300px]";
   const customClassByHead = cellData === "title" ? "flex items-center gap-2" : "w-[150px]"
+  cellData = cellData.charAt(0).toUpperCase() + cellData.slice(1);
+
+  /* 정렬이 가능한 컬럼 식별 */
+  const isDropColumn = cellData === "Title" || cellData === "Status" || cellData === "Priority";
 
   return (
     <TableHead
@@ -31,14 +35,24 @@ const TodoTableHeadCell = ({ cellData, className, ...props }: BaseCellProps) => 
       className={cn(className, customClass, "font-semibold") }
     >
       <div className={customClassByHead}>
-        <span>{ cellData === "id" ? "#" :
-          cellData.charAt(0).toUpperCase() + cellData.slice(1)
-        }</span>
+        { cellData === "Id" && "#" }
+        { !isDropColumn && cellData }
+      
+        { isDropColumn && cellData == "Title" && <SortTitleCell /> }
+        { isDropColumn && cellData == "Status" && <></> }
+        { isDropColumn && cellData == "Priority" && <></> }
       </div>
     </TableHead>
     
   );
 };
+
+/* Title 헤더 셀 정렬 */
+const SortTitleCell = () => {
+  return (
+    <></>
+  );
+}
 
 /* 바디 셀 */
 const TodoTableBodyCell = ({ cellData, ...props }: BaseCellProps) => {
