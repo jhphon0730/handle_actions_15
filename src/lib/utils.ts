@@ -1,14 +1,14 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export const buildError = (errors: Record<string, string[]>): string => {
   const filedErrors = Object.entries(errors)
     .filter(([key]) => key !== "_form")
-    .flatMap(([, message]) => message)
+    .flatMap(([, message]) => message);
 
   // 전체 오류 메시지에 _form 오류가 있으면 추가
   if (errors._form) {
@@ -16,10 +16,14 @@ export const buildError = (errors: Record<string, string[]>): string => {
   }
 
   return filedErrors.join(" ");
-}
+};
 
 /* 페이징 번호 배열 계산 함수 */
-export const buildPaginationRange = (currentPage: number, totalCount: number, limit: number):  ((number | "...")[]) => {
+export const buildPaginationRange = (
+  currentPage: number,
+  totalCount: number,
+  limit: number,
+): (number | "...")[] => {
   if (limit < 1) limit = 1;
   if (currentPage < 1) currentPage = 1;
   if (totalCount < 1) return [];
@@ -33,7 +37,7 @@ export const buildPaginationRange = (currentPage: number, totalCount: number, li
     return Array.from({ length: totalPage }, (_, i) => i + 1);
   }
 
-  const pages: (number | "...")[] = []
+  const pages: (number | "...")[] = [];
   const firstPage = 1;
   const lastPage = totalPage;
 
@@ -68,15 +72,20 @@ export const buildPaginationRange = (currentPage: number, totalCount: number, li
   }
 
   /* 끝 페이지가 마지막 페이지 바로 전보다 작으면 생략 부호 추가 */
-  if (end < totalPage -1) {
+  if (end < totalPage - 1) {
     pages.push("...");
   }
 
   pages.push(lastPage);
   return pages;
-}
+};
 
 /* 문자열 첫 번째만 대문자로 변경 */
 export const FirstChildCharUpper = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-}
+  /* createAt의 경우 다른 형식 */
+  if (str === "createdAt") {
+    return "CreatedAt";
+  }
+
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

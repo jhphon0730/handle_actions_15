@@ -1,4 +1,14 @@
-import { ChevronsUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Fragment } from "react";
+import {
+  ChevronsUpDown,
+  ArrowUp,
+  ArrowDown,
+  ArrowRight,
+  Circle,
+  CircleCheck,
+  CircleHelp,
+  Timer,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { TableHead, TableCell } from "@/components/ui/table";
@@ -13,6 +23,7 @@ import {
 import type { Todo } from "@/lib/types";
 import { useTodoStore } from "@/store/useTodoStore";
 import { cn, FirstChildCharUpper } from "@/lib/utils";
+import { Arrow } from "@radix-ui/react-select";
 
 /* 공통 셀 타입 */
 type BaseCellProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -97,7 +108,45 @@ const SortableHeader = ({ label }: SortableHeaderProps) => {
   );
 };
 
+type TodoTableBodyCellProps = BaseCellProps & {
+  cellType: "#" | "title" | "status" | "priority" | "createdAt";
+};
+
 /* 바디 셀 */
-export const TodoTableBodyCell = ({ cellData, ...props }: BaseCellProps) => {
-  return <TableCell>{cellData}</TableCell>;
+export const TodoTableBodyCell = ({
+  cellType,
+  cellData,
+  ...props
+}: TodoTableBodyCellProps) => {
+  return (
+    <TableCell>
+      {cellType === "priority" ? (
+        <div className="flex items-center gap-2">
+          {cellData === "high" ? (
+            <ArrowUp className="h-4 w-4" />
+          ) : cellData === "medium" ? (
+            <ArrowRight className="h-4 w-4" />
+          ) : cellData === "low" ? (
+            <ArrowDown className="h-4 w-4" />
+          ) : null}
+          {cellData}
+        </div>
+      ) : cellType === "status" ? (
+        <div className="flex items-center gap-2">
+          {cellData === "open" ? (
+            <Circle className="w-4 h-4" />
+          ) : cellData === "in-progress" ? (
+            <Timer className="w-4 h-4" />
+          ) : cellData === "pending" ? (
+            <CircleHelp className="w-4 h-4" />
+          ) : (
+            <CircleCheck className="w-4 h-4" />
+          )}
+          {cellData}
+        </div>
+      ) : (
+        cellData
+      )}
+    </TableCell>
+  );
 };
