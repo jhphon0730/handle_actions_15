@@ -23,7 +23,6 @@ import {
 import type { Todo } from "@/lib/types";
 import { useTodoStore } from "@/store/useTodoStore";
 import { cn, FirstChildCharUpper } from "@/lib/utils";
-import { Arrow } from "@radix-ui/react-select";
 
 /* 공통 셀 타입 */
 type BaseCellProps = React.HTMLAttributes<HTMLDivElement> & {
