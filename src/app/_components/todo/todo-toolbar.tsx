@@ -1,6 +1,6 @@
 import type React from "react";
-import { 
-  X, PlusCircle, 
+import {
+  X, PlusCircle,
   Circle, CheckCircle, Timer, CircleHelp,
   ArrowDown, ArrowRight, ArrowUp,
 } from "lucide-react";
@@ -21,18 +21,17 @@ type TodoToolbarProps = {
 
 export const TodoToolbar = ({
 }: TodoToolbarProps) => {
-  const { 
+  const {
     search, handleSearchChange,
     statusFilter, handleStatusFilter,
     priorityFilter, handlePriorityFilter,
-    isFilterd, handleResetFilters,
-
+    isFiltered, handleResetFilters,
   } = useTodoStore();
 
   return (
     <div className="flex items-center flex-wrap justify-between gap-2">
       <div className="flex items-center gap-2">
-        <Input 
+        <Input
           type="text"
           placeholder="Search todos..."
           value={search}
@@ -40,7 +39,7 @@ export const TodoToolbar = ({
           className="max-w-3xs"
         />
         {/* Status */}
-        <StatusFilter 
+        <StatusFilter
           statusFilter={statusFilter}
           onStatusFilter={handleStatusFilter}
         />
@@ -49,7 +48,7 @@ export const TodoToolbar = ({
           priorityFilter={priorityFilter}
           onPriorityFilter={handlePriorityFilter}
         />
-        { isFilterd &&
+        { isFiltered &&
           <Button
             type="button"
             variant="ghost"
@@ -94,7 +93,7 @@ const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
               <CommandGroup>
                 {/* Open */}
                 <CommandItem value="open" onSelect={onStatusFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={statusFilter.includes("open")}
                   />
                   <Circle />
@@ -102,7 +101,7 @@ const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
                 </CommandItem>
                 {/* Close */}
                 <CommandItem value="close" onSelect={onStatusFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={statusFilter.includes("close")}
                   />
                   <CheckCircle />
@@ -110,7 +109,7 @@ const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
                 </CommandItem>
                 {/* In-Progress */}
                 <CommandItem value="in-progress" onSelect={onStatusFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={statusFilter.includes("in-progress")}
                   />
                   <Timer />
@@ -118,7 +117,7 @@ const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
                 </CommandItem>
                 {/* Pending */}
                 <CommandItem value="pending" onSelect={onStatusFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={statusFilter.includes("pending")}
                   />
                   <CircleHelp />
@@ -135,7 +134,7 @@ const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
           key={status}
           variant="dashed"
         >
-          <Badge 
+          <Badge
             variant="outline"
           >
             {status}
@@ -147,8 +146,8 @@ const StatusFilter = ({statusFilter, onStatusFilter}: StatusFilterProps) => {
         <Button
           type="button"
           variant="dashed"
-        > 
-          <Badge 
+        >
+          <Badge
             variant="outline"
           >
             Selected {statusFilter.length}
@@ -185,7 +184,7 @@ const PriorityFilter = ({priorityFilter, onPriorityFilter}: PriorityFilterProps)
               <CommandGroup>
                 {/* low */}
                 <CommandItem value="low" onSelect={onPriorityFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={priorityFilter.includes("low")}
                   />
                   <ArrowDown />
@@ -193,7 +192,7 @@ const PriorityFilter = ({priorityFilter, onPriorityFilter}: PriorityFilterProps)
                 </CommandItem>
                 {/* medium */}
                 <CommandItem value="medium" onSelect={onPriorityFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={priorityFilter.includes("medium")}
                   />
                   <ArrowRight />
@@ -201,7 +200,7 @@ const PriorityFilter = ({priorityFilter, onPriorityFilter}: PriorityFilterProps)
                 </CommandItem>
                 {/* High */}
                 <CommandItem value="high" onSelect={onPriorityFilter}>
-                  <Checkbox 
+                  <Checkbox
                     checked={priorityFilter.includes("high")}
                   />
                   <ArrowUp />
@@ -218,7 +217,7 @@ const PriorityFilter = ({priorityFilter, onPriorityFilter}: PriorityFilterProps)
           key={status}
           variant="dashed"
         >
-          <Badge 
+          <Badge
             variant="outline"
           >
           {priorityFilter.length}

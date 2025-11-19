@@ -24,7 +24,7 @@ type TodoStore = {
   statusFilter: string[];
   priorityFilter: string[];
   filters: { [key in keyof Todo]?: string };
-  isFilterd: boolean;
+  isFiltered: boolean;
 
   sortableColumn: {
     column: keyof Todo | null;
@@ -33,6 +33,7 @@ type TodoStore = {
 
   /* 액션 */
   initialize: (options: TodoListDataOptions) => void;
+  calculateIsFiltered: () => boolean;
   handleResetFilters: () => void;
   handleSearchChange: (value: string) => void;
   handleStatusFilter: (value: string) => void;
@@ -63,7 +64,7 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   statusFilter: [],
   priorityFilter: [],
   filters: {},
-  isFilterd: false,
+  isFiltered: false,
 
   sortableColumn: {
     column: null,
@@ -82,6 +83,11 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
     get().handleResetFilters();
   },
 
+  calculateIsFiltered: () => {
+    const { search, statusFilter, priorityFilter, filters } = get();
+    return search.length > 0 || statusFilter.length > 0 || priorityFilter.length > 0 || Object.keys(filters).length > 0;
+  },
+
   handleResetFilters: () => {
     const { dataCount } = get();
     set({
@@ -89,27 +95,23 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
       statusFilter: [],
       priorityFilter: [],
       filters: {},
-      isFilterd: false,
+      isFiltered: false,
       totalPages: Math.ceil(dataCount / 5),
       page: 1,
     });
   },
 
   handleSearchChange: (value) => {
-    const { filters, statusFilter, priorityFilter } = get();
+    const { calculateIsFiltered } = get();
     set({
       page: 1,
       search: value,
-      isFilterd:
-        value.length > 0 ||
-        Object.keys(filters).length > 0 ||
-        statusFilter.length > 0 ||
-        priorityFilter.length > 0,
+      isFiltered: calculateIsFiltered(),
     });
   },
 
   handleStatusFilter: (value) => {
-    const { search, filters, priorityFilter, statusFilter } = get();
+    const { statusFilter, calculateIsFiltered } = get();
 
     const newFilters = statusFilter.includes(value)
       ? statusFilter.filter((x) => x !== value)
@@ -118,16 +120,12 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
     set({
       page: 1,
       statusFilter: newFilters,
-      isFilterd:
-        search.length > 0 ||
-        Object.keys(filters).length > 0 ||
-        newFilters.length > 0 ||
-        priorityFilter.length > 0,
+      isFiltered: calculateIsFiltered(),
     });
   },
 
   handlePriorityFilter: (value) => {
-    const { search, filters, statusFilter, priorityFilter } = get();
+    const { priorityFilter, calculateIsFiltered } = get();
 
     const newFilters = priorityFilter.includes(value)
       ? priorityFilter.filter((x) => x !== value)
@@ -136,21 +134,20 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
     set({
       page: 1,
       priorityFilter: newFilters,
-      isFilterd:
-        search.length > 0 ||
-        Object.keys(filters).length > 0 ||
-        statusFilter.length > 0 ||
-        newFilters.length > 0,
+      isFiltered: calculateIsFiltered(),
     });
   },
 
   handleUpdateFilter: (key, value) => {
+    const { calculateIsFiltered } = get();
+
     set({
       page: 1,
       filters: {
         ...get().filters,
         [key]: value,
       },
+      isFiltered: calculateIsFiltered(),
     });
   },
 
@@ -187,6 +184,7 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   },
 
   filteredData: () => {
+    const state = get();
     const {
       initialData,
       search,
@@ -195,8 +193,18 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
       priorityFilter,
       sortableColumn,
       defaultSearchKey,
-    } = get();
+    } = state;
 
+    // 현재 필터 상태를 문자열로 직렬화하여 캐시 키로 사용
+    const currentFilterState = JSON.stringify({
+      search,
+      filters,
+      statusFilter,
+      priorityFilter,
+      sortableColumn,
+    });
+
+    // 필터링 및 정렬 수행
     let result = [...initialData];
 
     if (search.length && defaultSearchKey) {
@@ -229,7 +237,8 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
     if (sortableColumn.column && sortableColumn.order) {
       const { column, order } = sortableColumn;
 
-      result = [...result].sort((a, b) => {
+      // 6번 개선: 불필요한 배열 복사 제거 (이미 result는 복사본)
+      result.sort((a, b) => {
         const x = a[column];
         const y = b[column];
 
